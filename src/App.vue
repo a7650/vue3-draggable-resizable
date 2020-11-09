@@ -10,7 +10,7 @@
         v-model:w="w"
         v-model:h="h"
         v-model:active="active"
-        :draggable="true"
+        :draggable="draggable"
         :resizable="true"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
@@ -39,8 +39,14 @@ export default defineComponent({
       y: 100,
       h: 100,
       w: 100,
-      active: false
+      active: false,
+      draggable: true
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.draggable = false
+    }, 2000)
   },
   methods: {
     print(val: string) {

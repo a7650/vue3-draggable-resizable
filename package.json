@@ -1,11 +1,13 @@
 {
-  "name": "vue3-draggable-resizable",
-  "version": "1.0.2",
+  "name": "vue-draggable-resizable-next",
+  "version": "1.0.4",
   "private": false,
-  "main": "dist/Vue3DraggableResizable.umd.js",
+  "main": "dist/Vue3DraggableResizable.umd.min.js",
+  "module": "dist/Vue3DraggableResizable.umd.min.js",
+  "unpkg": "dist/Vue3DraggableResizable.umd.min.js",
   "description": "[Vue3 Component] Draggable and resizable component for vue3",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:lib": "vue-cli-service build --target lib --name Vue3DraggableResizable src/index.ts"
@@ -32,6 +34,7 @@
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a7650/vue3-draggable-resizable.git"

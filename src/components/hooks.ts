@@ -10,10 +10,18 @@ interface Params {
   y?: Ref<number>
   autoUpdate?: boolean
   unselect?: () => void
+  enable?: Ref<boolean>
 }
 
 export function useDraggableContainer(options: Params = {}) {
-  const { dragStart, dragEnd, dragging, autoUpdate = true, unselect } = options
+  const {
+    dragStart,
+    dragEnd,
+    dragging,
+    autoUpdate = true,
+    unselect,
+    enable
+  } = options
   let { x = ref(0), y = ref(0) } = options
   let lstX: number = 0
   let lstY: number = 0
@@ -46,11 +54,13 @@ export function useDraggableContainer(options: Params = {}) {
     }
   }
   const handleDown = (e: any) => {
-    isDragging.value = true
-    lstX = e.pageX
-    lstY = e.pageY
-    document.documentElement.addEventListener('mousemove', handleDrag)
-    document.documentElement.addEventListener('mouseup', handleUp)
+    if (!enable || enable.value) {
+      isDragging.value = true
+      lstX = e.pageX
+      lstY = e.pageY
+      document.documentElement.addEventListener('mousemove', handleDrag)
+      document.documentElement.addEventListener('mouseup', handleUp)
+    }
   }
   watch(isDragging, (cur, pre) => {
     if (!pre && cur) {

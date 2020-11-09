@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, toRef } from 'vue'
 import { useDraggableContainer, useState, watchProperties } from './hooks'
 import './index.css'
 import { getElSize } from './utils'
@@ -67,7 +67,7 @@ const emits = [
 ]
 
 const VueDraggableResizable = defineComponent({
-  name:'VueDraggableResizable',
+  name: 'Vue3DraggableResizable',
   props: VdrProps,
   emits: emits,
   setup(props, { emit }) {
@@ -75,6 +75,7 @@ const VueDraggableResizable = defineComponent({
     const { top, left, setTop, setLeft, setEnable, setDragging } = containerProp
     const { containerRef } = useDraggableContainer({
       autoUpdate: false,
+      enable: toRef(props, 'draggable'),
       x: left,
       y: top,
       dragStart({ x, y }) {
