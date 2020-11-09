@@ -2,6 +2,7 @@ import { defineComponent, onMounted, ref, toRef } from 'vue'
 import { useDraggableContainer, useState, watchProperties } from './hooks'
 import './index.css'
 import { getElSize } from './utils'
+import { h } from 'vue'
 
 const VdrProps = {
   initW: {
@@ -144,6 +145,16 @@ const VueDraggableResizable = defineComponent({
       >
         {this.$slots.default!()}
       </div>
+    // this.$slots.default!()
+    // return h(
+    //   'div',
+    //   {
+    //     // ref: this.containerRef,
+    //     class: ['vdr-container', this.class],
+    //     style: this.style
+    //   },
+    //   this.$slots.default!()
+    // )
     )
   }
 })

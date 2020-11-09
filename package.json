@@ -1,10 +1,7 @@
 {
-  "name": "vue-draggable-resizable-next",
-  "version": "1.0.4",
+  "name": "vue3-draggable-resizable",
+  "version": "1.0.7",
   "private": false,
-  "main": "dist/Vue3DraggableResizable.umd.min.js",
-  "module": "dist/Vue3DraggableResizable.umd.min.js",
-  "unpkg": "dist/Vue3DraggableResizable.umd.min.js",
   "description": "[Vue3 Component] Draggable and resizable component for vue3",
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -49,5 +46,9 @@
     "draggable",
     "resizable",
     "拖拽"
-  ]
+  ],
+  "main": "dist/Vue3DraggableResizable.umd.min.js",
+  "module": "dist/Vue3DraggableResizable.umd.min.js",
+  "unpkg": "dist/Vue3DraggableResizable.umd.min.js",
+  "typings": "index.d.ts"
 }

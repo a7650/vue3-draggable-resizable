@@ -1,8 +1,12 @@
 <template>
   <div id="app">
     <div class="parent">
-      {{ `x:${x},y:${y},w:${w},h:${h}` }}
-      <VueDraggableResizable
+      x:{{ x }}<br />
+      y:{{ y }}<br />
+      w:{{ w }}<br />
+      h:{{ h }}<br />
+      active:{{ active }}<br />
+      <Vue3DraggableResizable
         :initW="110"
         :initH="120"
         v-model:x="x"
@@ -22,17 +26,17 @@
         @resize-end="print('resize-end')"
       >
         This is a test example
-      </VueDraggableResizable>
+      </Vue3DraggableResizable>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
-import VueDraggableResizable from './components/vue3-draggable-resizable'
+import Vue3DraggableResizable from './components/vue3-draggable-resizable'
 
 export default defineComponent({
-  components: { VueDraggableResizable },
+  components: { Vue3DraggableResizable },
   data() {
     return {
       x: 100,
@@ -49,7 +53,7 @@ export default defineComponent({
     }, 2000)
   },
   methods: {
-    print(val: string) {
+    print(val) {
       console.log(val)
     }
   }
@@ -57,11 +61,11 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .parent {
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
   position: absolute;
   top: 100px;
-  left: 100px;
+  left: 200px;
   border: 1px solid #000;
   user-select: none;
 }
