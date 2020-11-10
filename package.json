@@ -5,9 +5,10 @@
   "description": "[Vue3 Component] Draggable and resizable component for vue3",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "npm run build:lib && npm run build:dts",
     "lint": "vue-cli-service lint",
-    "build:lib": "vue-cli-service build --target lib --name Vue3DraggableResizable src/index.ts"
+    "build:lib": "vue-cli-service build --target lib --name Vue3DraggableResizable src/index.ts",
+    "build:dts":"tsc src/index.ts --declaration --declarationDir typings"
   },
   "dependencies": {},
   "devDependencies": {
@@ -50,5 +51,5 @@
   "main": "dist/Vue3DraggableResizable.umd.min.js",
   "module": "dist/Vue3DraggableResizable.umd.min.js",
   "unpkg": "dist/Vue3DraggableResizable.umd.min.js",
-  "typings": "index.d.ts"
+  "typings": "typings/index.d.ts"
 }

@@ -1,11 +1,23 @@
 <template>
   <div id="app">
+    <div>
+      x:{{ x }} <button @click="x += 10">+</button
+      ><button @click="x -= 10">-</button>
+    </div>
+    <div>
+      y:{{ y }}<button @click="y += 10">+</button
+      ><button @click="y -= 10">-</button>
+    </div>
+    <div>
+      w:{{ w }}<button @click="w += 10">+</button
+      ><button @click="w -= 10">-</button>
+    </div>
+    <div>
+      h: {{ h }}<button @click="h += 10">+</button
+      ><button @click="h -= 10">-</button>
+    </div>
+    <div>active:{{ active }}<br /></div>
     <div class="parent">
-      x:{{ x }}<br />
-      y:{{ y }}<br />
-      w:{{ w }}<br />
-      h:{{ h }}<br />
-      active:{{ active }}<br />
       <Vue3DraggableResizable
         :initW="110"
         :initH="120"
@@ -47,11 +59,7 @@ export default defineComponent({
       draggable: true
     }
   },
-  mounted() {
-    setTimeout(() => {
-      this.draggable = false
-    }, 2000)
-  },
+  mounted() {},
   methods: {
     print(val) {
       console.log(val)

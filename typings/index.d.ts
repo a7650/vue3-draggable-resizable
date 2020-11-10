@@ -1,5 +1,5 @@
 import { App } from 'vue';
-declare const Vue3DraggableResizable: ({
+declare const _default: ({
     new (...args: any[]): {
         $: import("vue").ComponentInternalInstance;
         $data: {};
@@ -27,7 +27,7 @@ declare const Vue3DraggableResizable: ({
             resizable: boolean;
             minW: number;
             minH: number;
-        } & {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, "style" | "key" | "class" | "ref" | "onVnodeBeforeMount" | "onVnodeMounted" | "onVnodeBeforeUpdate" | "onVnodeUpdated" | "onVnodeBeforeUnmount" | "onVnodeUnmounted">;
+        } & {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, "style" | "key" | "ref" | "class" | "onVnodeBeforeMount" | "onVnodeMounted" | "onVnodeBeforeUpdate" | "onVnodeUpdated" | "onVnodeBeforeUnmount" | "onVnodeUnmounted">;
         $attrs: Record<string, unknown>;
         $refs: Record<string, unknown>;
         $slots: Readonly<{
@@ -69,7 +69,7 @@ declare const Vue3DraggableResizable: ({
             style(): {
                 [propName: string]: string;
             };
-            class(): {
+            klass(): {
                 [propName: string]: string | boolean;
             };
         }, {
@@ -122,7 +122,7 @@ declare const Vue3DraggableResizable: ({
         style: {
             [propName: string]: string;
         };
-        class: {
+        klass: {
             [propName: string]: string | boolean;
         };
     } & {
@@ -163,7 +163,7 @@ declare const Vue3DraggableResizable: ({
     style(): {
         [propName: string]: string;
     };
-    class(): {
+    klass(): {
         [propName: string]: string | boolean;
     };
 }, {
@@ -210,7 +210,7 @@ declare const Vue3DraggableResizable: ({
             resizable: boolean;
             minW: number;
             minH: number;
-        } & {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, "style" | "key" | "class" | "ref" | "onVnodeBeforeMount" | "onVnodeMounted" | "onVnodeBeforeUpdate" | "onVnodeUpdated" | "onVnodeBeforeUnmount" | "onVnodeUnmounted">;
+        } & {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, "style" | "key" | "ref" | "class" | "onVnodeBeforeMount" | "onVnodeMounted" | "onVnodeBeforeUpdate" | "onVnodeUpdated" | "onVnodeBeforeUnmount" | "onVnodeUnmounted">;
         $attrs: Record<string, unknown>;
         $refs: Record<string, unknown>;
         $slots: Readonly<{
@@ -252,7 +252,7 @@ declare const Vue3DraggableResizable: ({
             style(): {
                 [propName: string]: string;
             };
-            class(): {
+            klass(): {
                 [propName: string]: string | boolean;
             };
         }, {
@@ -305,7 +305,7 @@ declare const Vue3DraggableResizable: ({
         style: {
             [propName: string]: string;
         };
-        class: {
+        klass: {
             [propName: string]: string | boolean;
         };
     } & {
@@ -346,7 +346,7 @@ declare const Vue3DraggableResizable: ({
     style(): {
         [propName: string]: string;
     };
-    class(): {
+    klass(): {
         [propName: string]: string | boolean;
     };
 }, {
@@ -366,4 +366,4 @@ declare const Vue3DraggableResizable: ({
 }> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & {
     install: (app: App<any>, ...options: any[]) => any;
 });
-export default Vue3DraggableResizable;
+export default _default;

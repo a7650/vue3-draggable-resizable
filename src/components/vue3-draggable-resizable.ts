@@ -1,8 +1,26 @@
-import { defineComponent, onMounted, ref, toRef } from 'vue'
-import { useDraggableContainer, useState, watchProperties } from './hooks'
+import { defineComponent, onMounted, ref, toRef, toRefs } from 'vue'
+import {
+  useDraggableContainer,
+  useState,
+  watchProps,
+  initState,
+  initParent,
+  initLimitSizeAndMethods
+} from './hooks'
 import './index.css'
 import { getElSize } from './utils'
 import { h } from 'vue'
+
+export type ResizingHandle =
+  | 'tl'
+  | 'tm'
+  | 'tr'
+  | 'ml'
+  | 'mr'
+  | 'bl'
+  | 'bm'
+  | 'br'
+  | ''
 
 const VdrProps = {
   initW: {
@@ -48,6 +66,14 @@ const VdrProps = {
   active: {
     type: Boolean,
     default: false
+  },
+  parent: {
+    type: Boolean,
+    default: true
+  },
+  handles: {
+    type: Array,
+    default: ['tl', 'tm', 'tr', 'ml', 'mr', 'bl', 'bm', 'br']
   }
 }
 
@@ -72,9 +98,15 @@ const VueDraggableResizable = defineComponent({
   props: VdrProps,
   emits: emits,
   setup(props, { emit }) {
-    const containerProp = watchProperties(props, emit)
-    const { top, left, setTop, setLeft, setEnable, setDragging } = containerProp
-    const { containerRef } = useDraggableContainer({
+    const containerProp = initState(props, emit)
+    const containerRef = ref<HTMLElement>()
+    const { top, left, setEnable, setDragging } = containerProp
+    const parentSize = initParent(containerRef)
+    const limitProp = initLimitSizeAndMethods(props, parentSize, containerProp)
+    watchProps(props,limitProp)
+    const { setLeft, setTop } = limitProp
+    useDraggableContainer({
+      containerRef,
       autoUpdate: false,
       enable: toRef(props, 'draggable'),
       x: left,
@@ -99,7 +131,12 @@ const VueDraggableResizable = defineComponent({
         setEnable(false)
       }
     })
-    return { ...containerProp, containerRef }
+    return {
+      containerRef,
+      ...containerProp,
+      ...parentSize,
+      ...limitProp
+    }
   },
   data() {
     return {}
@@ -113,7 +150,7 @@ const VueDraggableResizable = defineComponent({
         left: this.left + 'px'
       }
     },
-    class(): { [propName: string]: string | boolean } {
+    klass(): { [propName: string]: string | boolean } {
       return {
         active: this.enable,
         dragging: this.dragging,
@@ -130,31 +167,16 @@ const VueDraggableResizable = defineComponent({
     this.setWidth(this.initW === null ? this.w || width : this.initW)
     this.setHeight(this.initH === null ? this.h || height : this.initH)
   },
-  methods: {
-    unselect(e: Event) {
-      const target = e.target
-      //   if(this.$el)
-    }
-  },
+  methods: {},
   render() {
-    return (
-      <div
-        ref="containerRef"
-        class={['vdr-container', this.class]}
-        style={this.style}
-      >
-        {this.$slots.default!()}
-      </div>
-    // this.$slots.default!()
-    // return h(
-    //   'div',
-    //   {
-    //     // ref: this.containerRef,
-    //     class: ['vdr-container', this.class],
-    //     style: this.style
-    //   },
-    //   this.$slots.default!()
-    // )
+    return h(
+      'div',
+      {
+        ref: 'containerRef',
+        class: ['vdr-container', this.klass],
+        style: this.style
+      },
+      this.$slots.default!()
     )
   }
 })
