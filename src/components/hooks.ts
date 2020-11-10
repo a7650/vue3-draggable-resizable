@@ -1,8 +1,11 @@
-import { onMounted, onUnmounted, ref, watch, Ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
+import { getElSize } from './utils'
+import { ResizingHandle } from './vue3-draggable-resizable'
 
 type DragHandleFn = ({ x, y }: { x: number; y: number }) => void
 
 interface Params {
+  containerRef: Ref<HTMLElement | undefined>
   dragStart?: DragHandleFn
   dragEnd?: DragHandleFn
   dragging?: DragHandleFn
@@ -13,19 +16,19 @@ interface Params {
   enable?: Ref<boolean>
 }
 
-export function useDraggableContainer(options: Params = {}) {
+export function useDraggableContainer(options: Params) {
   const {
     dragStart,
     dragEnd,
     dragging,
     autoUpdate = true,
     unselect,
-    enable
+    enable,
+    containerRef
   } = options
   let { x = ref(0), y = ref(0) } = options
   let lstX: number = 0
   let lstY: number = 0
-  const containerRef = ref<HTMLDivElement>()
   const isDragging = ref(false)
   const _unselect = (e: MouseEvent) => {
     const target = e.target
@@ -94,7 +97,7 @@ export function useState<T>(initialState: T): [Ref<T>, (value: T) => void] {
   return [state, setState]
 }
 
-export function watchProperties(props: any, emit: any) {
+export function initState(props: any, emit: any) {
   const [width, setWidth] = useState<number>(props.initW)
   const [height, setHeight] = useState<number>(props.initH)
   const [left, setLeft] = useState<number>(props.x)
@@ -102,10 +105,10 @@ export function watchProperties(props: any, emit: any) {
   const [enable, setEnable] = useState<boolean>(props.active)
   const [dragging, setDragging] = useState<boolean>(false)
   const [resizing, setResizing] = useState<boolean>(false)
+  const [resizingHandle, setResizingHandle] = useState<ResizingHandle>('')
   watch(
     width,
     (newVal) => {
-      console.log('width', newVal)
       emit('update:w', newVal)
     },
     { immediate: true }
@@ -132,6 +135,145 @@ export function watchProperties(props: any, emit: any) {
     }
   })
   watch(
+    () => props.active,
+    (newVal: boolean) => {
+      setEnable(newVal)
+    }
+  )
+  return {
+    width,
+    height,
+    top,
+    left,
+    enable,
+    dragging,
+    resizing,
+    resizingHandle,
+    setEnable,
+    setDragging,
+    setResizing,
+    setResizingHandle,
+    $setWidth: setWidth,
+    $setHeight: setHeight,
+    $setTop: setTop,
+    $setLeft: setLeft
+  }
+}
+
+export function initParent(containerRef: Ref<HTMLElement | undefined>) {
+  const parentWidth = ref<number>(0)
+  const parentHeight = ref<number>(0)
+  onMounted(() => {
+    if (containerRef.value && containerRef.value.parentElement) {
+      const { width, height } = getElSize(containerRef.value.parentElement)
+      parentWidth.value = width
+      parentHeight.value = height
+    }
+  })
+  return {
+    parentWidth,
+    parentHeight
+  }
+}
+
+export function initLimitSizeAndMethods(
+  props: any,
+  parentSize: ReturnType<typeof initParent>,
+  methods: ReturnType<typeof initState>
+) {
+  const { width, height, top, left, resizingHandle } = methods
+  const { $setWidth, $setHeight, $setTop, $setLeft } = methods
+  const { parentWidth, parentHeight } = parentSize
+  const limitProps = {
+    minWidth: computed(() => {
+      return props.minW as number
+    }),
+    minHeight: computed(() => {
+      return props.minH as number
+    }),
+    maxWidth: computed(() => {
+      let max = Infinity
+      if (props.parent) {
+        max = Math.min(
+          parentWidth.value,
+          resizingHandle.value[1] === 'l'
+            ? left.value + width.value
+            : parentWidth.value - left.value
+        )
+      }
+      return max
+    }),
+    maxHeight: computed(() => {
+      let max = Infinity
+      if (props.parent) {
+        max = Math.min(
+          parentHeight.value,
+          resizingHandle.value[0] === 't'
+            ? top.value + height.value
+            : parentHeight.value - top.value
+        )
+      }
+      return max
+    }),
+    minLeft: computed(() => {
+      return props.parent ? 0 : -Infinity
+    }),
+    minTop: computed(() => {
+      return props.parent ? 0 : -Infinity
+    }),
+    maxLeft: computed(() => {
+      return props.parent ? parentWidth.value - width.value : Infinity
+    }),
+    maxTop: computed(() => {
+      return props.parent ? parentHeight.value - height.value : Infinity
+    })
+  }
+  const limitMethods = {
+    setWidth(val: number) {
+      $setWidth(
+        Math.min(
+          limitProps.maxWidth.value,
+          Math.max(limitProps.minWidth.value, val)
+        )
+      )
+    },
+    setHeight(val: number) {
+      $setHeight(
+        Math.min(
+          limitProps.maxHeight.value,
+          Math.max(limitProps.minHeight.value, val)
+        )
+      )
+    },
+    setTop(val: number) {
+      $setTop(
+        Math.min(
+          limitProps.maxTop.value,
+          Math.max(limitProps.minTop.value, val)
+        )
+      )
+    },
+    setLeft(val: number) {
+      $setLeft(
+        Math.min(
+          limitProps.maxLeft.value,
+          Math.max(limitProps.minLeft.value, val)
+        )
+      )
+    }
+  }
+  return {
+    ...limitProps,
+    ...limitMethods
+  }
+}
+
+export function watchProps(
+  props: any,
+  limits: ReturnType<typeof initLimitSizeAndMethods>
+) {
+  const { setWidth, setHeight, setLeft, setTop } = limits
+  watch(
     () => props.w,
     (newVal: number) => {
       setWidth(newVal)
@@ -155,26 +297,4 @@ export function watchProperties(props: any, emit: any) {
       setTop(newVal)
     }
   )
-  watch(
-    () => props.active,
-    (newVal: boolean) => {
-      setEnable(newVal)
-    }
-  )
-  return {
-    width,
-    setWidth,
-    height,
-    setHeight,
-    top,
-    setTop,
-    left,
-    setLeft,
-    enable,
-    setEnable,
-    dragging,
-    setDragging,
-    resizing,
-    setResizing
-  }
 }
