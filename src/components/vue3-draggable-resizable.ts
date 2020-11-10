@@ -69,7 +69,7 @@ const VdrProps = {
   },
   parent: {
     type: Boolean,
-    default: true
+    default: false
   },
   handles: {
     type: Array,

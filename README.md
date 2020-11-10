@@ -212,6 +212,14 @@ Defines the component can be resizable or not
 ```html
 <vue3DraggableResizable :draggable="true"/>
 ```
+#### parent
+type: `Boolean`<br>
+default: `false`<br>
+
+Restrict movement and size within its parent node
+```html
+<vue3DraggableResizable :parent="true"/>
+```
 
 ### Events
 #### activated

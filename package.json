@@ -1,6 +1,6 @@
 {
   "name": "vue3-draggable-resizable",
-  "version": "1.0.7",
+  "version": "1.1.1",
   "private": false,
   "description": "[Vue3 Component] Draggable and resizable component for vue3",
   "scripts": {

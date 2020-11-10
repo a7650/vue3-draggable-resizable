@@ -28,6 +28,7 @@
         v-model:active="active"
         :draggable="draggable"
         :resizable="true"
+        :parent="true"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
         @drag-start="print('drag-start')"

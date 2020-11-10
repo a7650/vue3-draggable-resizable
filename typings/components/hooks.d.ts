@@ -1,9 +1,11 @@
 import { Ref } from 'vue';
+import { ResizingHandle } from './vue3-draggable-resizable';
 declare type DragHandleFn = ({ x, y }: {
     x: number;
     y: number;
 }) => void;
 interface Params {
+    containerRef: Ref<HTMLElement | undefined>;
     dragStart?: DragHandleFn;
     dragEnd?: DragHandleFn;
     dragging?: DragHandleFn;
@@ -13,24 +15,45 @@ interface Params {
     unselect?: () => void;
     enable?: Ref<boolean>;
 }
-export declare function useDraggableContainer(options?: Params): {
-    containerRef: Ref<HTMLDivElement>;
+export declare function useDraggableContainer(options: Params): {
+    containerRef: Ref<HTMLElement>;
 };
 export declare function useState<T>(initialState: T): [Ref<T>, (value: T) => void];
-export declare function watchProperties(props: any, emit: any): {
+export declare function initState(props: any, emit: any): {
     width: Ref<number>;
-    setWidth: (value: number) => void;
     height: Ref<number>;
-    setHeight: (value: number) => void;
     top: Ref<number>;
-    setTop: (value: number) => void;
     left: Ref<number>;
-    setLeft: (value: number) => void;
     enable: Ref<boolean>;
-    setEnable: (value: boolean) => void;
     dragging: Ref<boolean>;
-    setDragging: (value: boolean) => void;
     resizing: Ref<boolean>;
+    resizingHandle: Ref<ResizingHandle>;
+    setEnable: (value: boolean) => void;
+    setDragging: (value: boolean) => void;
     setResizing: (value: boolean) => void;
+    setResizingHandle: (value: ResizingHandle) => void;
+    $setWidth: (value: number) => void;
+    $setHeight: (value: number) => void;
+    $setTop: (value: number) => void;
+    $setLeft: (value: number) => void;
 };
+export declare function initParent(containerRef: Ref<HTMLElement | undefined>): {
+    parentWidth: Ref<number>;
+    parentHeight: Ref<number>;
+};
+export declare function initLimitSizeAndMethods(props: any, parentSize: ReturnType<typeof initParent>, methods: ReturnType<typeof initState>): {
+    setWidth(val: number): void;
+    setHeight(val: number): void;
+    setTop(val: number): void;
+    setLeft(val: number): void;
+    minWidth: import("vue").ComputedRef<number>;
+    minHeight: import("vue").ComputedRef<number>;
+    maxWidth: import("vue").ComputedRef<number>;
+    maxHeight: import("vue").ComputedRef<number>;
+    minLeft: import("vue").ComputedRef<number>;
+    minTop: import("vue").ComputedRef<number>;
+    maxLeft: import("vue").ComputedRef<number>;
+    maxTop: import("vue").ComputedRef<number>;
+};
+export declare function watchProps(props: any, limits: ReturnType<typeof initLimitSizeAndMethods>): void;
 export {};

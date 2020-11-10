@@ -1,4 +1,12 @@
-import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  Ref,
+  computed,
+  reactive
+} from 'vue'
 import { getElSize } from './utils'
 import { ResizingHandle } from './vue3-draggable-resizable'
 
@@ -27,8 +35,10 @@ export function useDraggableContainer(options: Params) {
     containerRef
   } = options
   let { x = ref(0), y = ref(0) } = options
-  let lstX: number = 0
-  let lstY: number = 0
+  let lstX = 0
+  let lstY = 0
+  let lstPageX = 0
+  let lstPageY = 0
   const isDragging = ref(false)
   const _unselect = (e: MouseEvent) => {
     const target = e.target
@@ -44,23 +54,25 @@ export function useDraggableContainer(options: Params) {
   const handleDrag = (e: MouseEvent) => {
     if (!(isDragging.value && containerRef.value)) return
     const { pageX, pageY } = e
-    const deltaX = pageX - lstX
-    const deltaY = pageY - lstY
-    x.value = x.value + deltaX
-    y.value = y.value + deltaY
-    lstX = pageX
-    lstY = pageY
-    dragging && dragging({ x: x.value, y: y.value })
+    const deltaX = pageX - lstPageX
+    const deltaY = pageY - lstPageY
+    // x.value = x.value + deltaX
+    // y.value = y.value + deltaY
+    // lstX = pageX
+    // lstY = pageY
+    dragging && dragging({ x: lstX + deltaX, y: lstY + deltaY })
     if (autoUpdate) {
       containerRef.value.style.left = x + 'px'
       containerRef.value.style.top = y + 'px'
     }
   }
-  const handleDown = (e: any) => {
+  const handleDown = (e: MouseEvent) => {
     if (!enable || enable.value) {
       isDragging.value = true
-      lstX = e.pageX
-      lstY = e.pageY
+      lstX = x.value
+      lstY = y.value
+      lstPageX = e.pageX
+      lstPageY = e.pageY
       document.documentElement.addEventListener('mousemove', handleDrag)
       document.documentElement.addEventListener('mouseup', handleUp)
     }
@@ -106,6 +118,14 @@ export function initState(props: any, emit: any) {
   const [dragging, setDragging] = useState<boolean>(false)
   const [resizing, setResizing] = useState<boolean>(false)
   const [resizingHandle, setResizingHandle] = useState<ResizingHandle>('')
+  // const mouseClickSnapshot = reactive({
+  //   x: 0,
+  //   y: 0,
+  //   w: 0,
+  //   h: 0,
+  //   pageX: 0,
+  //   pageY: 0
+  // })
   watch(
     width,
     (newVal) => {
