@@ -233,17 +233,17 @@ payload: `-`
 <vue3DraggableResizable @deactivated="deactivatedHandle"/>
 ```
 #### drag-start
-payload: `{ x: number, y: number, w: number, h: number }`
+payload: `{ x: number, y: number }`
 ```html
 <vue3DraggableResizable @drag-start="dragStartHandle"/>
 ```
 #### dragging
-payload: `{ x: number, y: number, w: number, h: number }v`
+payload: `{ x: number, y: number }v`
 ```html
 <vue3DraggableResizable @dragging="dragStartHandle"/>
 ```
 #### drag-end
-payload: `{ x: number, y: number, w: number, h: number }`
+payload: `{ x: number, y: number }`
 ```html
 <vue3DraggableResizable @drag-end="dragEndHandle"/>
 ```
