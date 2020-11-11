@@ -88,6 +88,30 @@ const VdrProps = {
     validator: (handles: ResizingHandle[]) => {
       return filterHandles(handles).length === handles.length
     }
+  },
+  classNameDraggable: {
+    type: String,
+    default: 'draggable'
+  },
+  classNameResizable: {
+    type: String,
+    default: 'resizable'
+  },
+  classNameDragging: {
+    type: String,
+    default: 'dragging'
+  },
+  classNameResizing: {
+    type: String,
+    default: 'resizing'
+  },
+  classNameActive: {
+    type: String,
+    default: 'active'
+  },
+  classNameHandle: {
+    type: String,
+    default: 'handle'
   }
 }
 
@@ -178,11 +202,11 @@ const VueDraggableResizable = defineComponent({
     },
     klass(): { [propName: string]: string | boolean } {
       return {
-        active: this.enable,
-        dragging: this.dragging,
-        resizing: this.resizing,
-        draggable: this.draggable,
-        resizable: this.resizable
+        [this.classNameActive]: this.enable,
+        [this.classNameDragging]: this.dragging,
+        [this.classNameResizing]: this.resizing,
+        [this.classNameDraggable]: this.draggable,
+        [this.classNameResizable]: this.resizable
       }
     },
     handlesFiltered(): ResizingHandle[] {
@@ -208,7 +232,12 @@ const VueDraggableResizable = defineComponent({
         this.$slots.default!(),
         ...this.handlesFiltered.map((item) =>
           h('div', {
-            class: ['handle', 'handle-' + item],
+            class: [
+              'vdr-handle',
+              'vdr-handle-' + item,
+              this.classNameHandle,
+              `${this.classNameHandle}-${item}`
+            ],
             style: { display: this.enable ? 'block' : 'none' },
             onMousedown: (e: MouseEvent) =>
               this.resizeHandleDown(e, <ResizingHandle>item)

@@ -10,54 +10,54 @@
   border-color: #000;
   border-style: solid;
 }
-.handle {
+.vdr-handle {
   box-sizing: border-box;
   position: absolute;
   width: 7px;
   height: 7px;
-  background:#f0f0f0;
+  background: #f0f0f0;
   border: 1px solid #333;
 }
-.handle-tl {
+.vdr-handle-tl {
   top: -4px;
   left: -4px;
   cursor: nw-resize;
 }
-.handle-tm {
+.vdr-handle-tm {
   top: -4px;
   left: 50%;
   margin-left: -3px;
   cursor: n-resize;
 }
-.handle-tr {
+.vdr-handle-tr {
   top: -4px;
   right: -4px;
   cursor: ne-resize;
 }
-.handle-ml {
+.vdr-handle-ml {
   top: 50%;
   margin-top: -4px;
   left: -4px;
   cursor: w-resize;
 }
-.handle-mr {
+.vdr-handle-mr {
   top: 50%;
   margin-top: -4px;
   right: -4px;
   cursor: e-resize;
 }
-.handle-bl {
+.vdr-handle-bl {
   bottom: -4px;
   left: -4px;
   cursor: sw-resize;
 }
-.handle-bm {
+.vdr-handle-bm {
   bottom: -4px;
   left: 50%;
   margin-left: -4px;
   cursor: s-resize;
 }
-.handle-br {
+.vdr-handle-br {
   bottom: -4px;
   right: -4px;
   cursor: se-resize;
