@@ -8,12 +8,11 @@
 
 </div>
 
-
 > [ Vue3 Component ] Draggable and resizable component for vue3
 
 ### Features
 
-* At present, only "draggable" feature is supported, I will update the "resizable" feature as soon as possible.
+- At present, only "draggable" feature is supported, I will update the "resizable" feature as soon as possible.
 
 ### Usage
 
@@ -32,10 +31,13 @@ import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 // You will have a global component named "Vue3DraggableResizable"
-createApp(App).use(Vue3DraggableResizable).mount('#app')
+createApp(App)
+  .use(Vue3DraggableResizable)
+  .mount('#app')
 ```
 
 You can also use it separately within the component
+
 ```js
 // >component.js
 import { defineComponent } from 'vue'
@@ -44,10 +46,9 @@ import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 export default defineComponent({
-    components:{ Vue3DraggableResizable },
-    // ...other
+  components: { Vue3DraggableResizable }
+  // ...other
 })
-
 ```
 
 Here is a complete example of using "vue-template"
@@ -120,145 +121,224 @@ export default defineComponent({
 ### Props
 
 #### initW
+
 type: `Number`<br>
 default: `null`<br>
 
 Set initial width(px)
+
 ```html
-<vue3DraggableResizable :initW="100"/>
+<vue3DraggableResizable :initW="100" />
 ```
+
 #### initH
+
 type: `Number`<br>
 default: `null`<br>
 
 Set initial height(px)
+
 ```html
-<vue3DraggableResizable :initH="100"/>
+<vue3DraggableResizable :initH="100" />
 ```
+
 #### w
+
 type: `Number`<br>
 default: `0`<br>
 
- Current width(px) of the container.<br>
- You can use "v-model:w" to keeps it up-to-date
+Current width(px) of the container.<br>
+You can use "v-model:w" to keeps it up-to-date
+
 ```html
-<vue3DraggableResizable v-model:w="100"/>
+<vue3DraggableResizable v-model:w="100" />
 ```
+
 #### h
+
 type: `Number`<br>
 default: `0`<br>
 
 Current height(px) of the container.<br>
- You can use "v-model:h" to keeps it up-to-date
+You can use "v-model:h" to keeps it up-to-date
+
 ```html
-<vue3DraggableResizable v-model:h="100"/>
+<vue3DraggableResizable v-model:h="100" />
 ```
+
 #### x
+
 type: `Number`<br>
 default: `0`<br>
 
- Current left(px) of the container.<br>
- You can use "v-model:x" to keeps it up-to-date
+Current left(px) of the container.<br>
+You can use "v-model:x" to keeps it up-to-date
+
 ```html
-<vue3DraggableResizable v-model:x="100"/>
+<vue3DraggableResizable v-model:x="100" />
 ```
+
 #### y
+
 type: `Number`<br>
 default: `0`<br>
 
- The current top(px) of the container.<br>
- You can use "v-model:y" to keeps it up-to-date
+The current top(px) of the container.<br>
+You can use "v-model:y" to keeps it up-to-date
+
 ```html
-<vue3DraggableResizable v-model:y="100"/>
+<vue3DraggableResizable v-model:y="100" />
 ```
+
 #### minW
+
 type: `Number`<br>
 default: `20`<br>
 
- Minimum width(px)
+Minimum width(px)
+
 ```html
-<vue3DraggableResizable :minW="100"/>
+<vue3DraggableResizable :minW="100" />
 ```
+
 #### minH
+
 type: `Number`<br>
 default: `20`<br>
 
- Minimum height(px)
+Minimum height(px)
+
 ```html
-<vue3DraggableResizable :minH="100"/>
+<vue3DraggableResizable :minH="100" />
 ```
+
 #### active
+
 type: `Boolean`<br>
 default: `false`<br>
 
- Indicates whether the component is selected.<br>
- You can use "v-model:active" to keeps it up-to-date
+Indicates whether the component is selected.<br>
+You can use "v-model:active" to keeps it up-to-date
+
 ```html
-<vue3DraggableResizable v-model:active="100"/>
+<vue3DraggableResizable v-model:active="100" />
 ```
+
 #### draggable
+
 type: `Boolean`<br>
 default: `true`<br>
 
 Defines the component can be draggable or not
+
 ```html
-<vue3DraggableResizable :draggable="true"/>
+<vue3DraggableResizable :draggable="true" />
 ```
+
 #### resizable
+
 type: `Boolean`<br>
 default: `true`<br>
 
 Defines the component can be resizable or not
+
 ```html
-<vue3DraggableResizable :draggable="true"/>
+<vue3DraggableResizable :draggable="true" />
 ```
+
 #### parent
+
 type: `Boolean`<br>
 default: `false`<br>
 
 Restrict movement and size within its parent node
+
 ```html
-<vue3DraggableResizable :parent="true"/>
+<vue3DraggableResizable :parent="true" />
+```
+
+#### handles
+
+type: `Array`<br>
+default: `['tl', 'tm', 'tr', 'ml', 'mr', 'bl', 'bm', 'br']`
+
+Define the array of handles to restrict the element resizing
+
+- `tl` : Top left
+- `tm` : Top middle
+- `tr` : Top right
+- `mr` : Middle right
+- `ml` : Middle left
+- `bl` : Bottom left
+- `bm` : Bottom middle
+- `br` : Bottom right
+
+```html
+<vue3DraggableResizable :handles="['tl','tr','bl','br']" />
 ```
 
 ### Events
+
 #### activated
+
 payload: `-`
+
 ```html
-<vue3DraggableResizable @activated="activatedHandle"/>
+<vue3DraggableResizable @activated="activatedHandle" />
 ```
+
 #### deactivated
+
 payload: `-`
+
 ```html
-<vue3DraggableResizable @deactivated="deactivatedHandle"/>
+<vue3DraggableResizable @deactivated="deactivatedHandle" />
 ```
+
 #### drag-start
+
 payload: `{ x: number, y: number }`
+
 ```html
-<vue3DraggableResizable @drag-start="dragStartHandle"/>
+<vue3DraggableResizable @drag-start="dragStartHandle" />
 ```
+
 #### dragging
+
 payload: `{ x: number, y: number }v`
+
 ```html
-<vue3DraggableResizable @dragging="dragStartHandle"/>
+<vue3DraggableResizable @dragging="dragStartHandle" />
 ```
+
 #### drag-end
+
 payload: `{ x: number, y: number }`
+
 ```html
-<vue3DraggableResizable @drag-end="dragEndHandle"/>
+<vue3DraggableResizable @drag-end="dragEndHandle" />
 ```
+
 #### resize-start
+
 payload: `{ x: number, y: number, w: number, h: number }`
+
 ```html
-<vue3DraggableResizable @resize-start="resizeStartHandle"/>
+<vue3DraggableResizable @resize-start="resizeStartHandle" />
 ```
+
 #### resizing
+
 payload: `{ x: number, y: number, w: number, h: number }v`
+
 ```html
-<vue3DraggableResizable @resizing="resizingHandle"/>
+<vue3DraggableResizable @resizing="resizingHandle" />
 ```
+
 #### resize-end
+
 payload: `{ x: number, y: number, w: number, h: number }`
+
 ```html
-<vue3DraggableResizable @resize-end="resizeEndHandle"/>
+<vue3DraggableResizable @resize-end="resizeEndHandle" />
 ```
