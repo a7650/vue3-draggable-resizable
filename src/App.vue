@@ -31,12 +31,12 @@
         :parent="true"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
-        @drag-start="print('drag-start')"
-        @resize-start="print('resize-start')"
-        @dragging="print('dragging')"
-        @resizing="print('resizing')"
-        @drag-end="print('drag-end')"
-        @resize-end="print('resize-end')"
+        @drag-start="print('drag-start', $event)"
+        @resize-start="print('resize-start', $event)"
+        @dragging="print('dragging', $event)"
+        @resizing="print('resizing', $event)"
+        @drag-end="print('drag-end', $event)"
+        @resize-end="print('resize-end', $event)"
       >
         This is a test example
       </Vue3DraggableResizable>
@@ -62,8 +62,8 @@ export default defineComponent({
   },
   mounted() {},
   methods: {
-    print(val) {
-      console.log(val)
+    print(val, e) {
+      console.log(val, e)
     }
   }
 })

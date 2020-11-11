@@ -124,19 +124,15 @@ const VueDraggableResizable = defineComponent({
       x: left,
       y: top,
       dragStart({ x, y }) {
-        setLeft(x)
-        setTop(y)
-        emit('drag-start', { x, y })
+        emit('drag-start', { x: setLeft(x), y: setTop(y) })
         setEnable(true)
         setDragging(true)
       },
       dragging({ x, y }) {
-        setLeft(x)
-        setTop(y)
-        emit('dragging', { x, y })
+        emit('dragging', { x: setLeft(x), y: setTop(y) })
       },
       dragEnd({ x, y }) {
-        emit('drag-end', { x, y })
+        emit('drag-end', { x: setLeft(x), y: setTop(y) })
         setDragging(false)
       },
       unselect() {

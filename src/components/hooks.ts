@@ -101,10 +101,11 @@ export function useDraggableContainer(options: Params) {
   return { containerRef }
 }
 
-export function useState<T>(initialState: T): [Ref<T>, (value: T) => void] {
+export function useState<T>(initialState: T): [Ref<T>, (value: T) => T] {
   const state = ref(initialState) as Ref<T>
-  const setState = (value: T) => {
+  const setState = (value: T): T => {
     state.value = value
+    return value
   }
   return [state, setState]
 }
@@ -250,7 +251,7 @@ export function initLimitSizeAndMethods(
   }
   const limitMethods = {
     setWidth(val: number) {
-      $setWidth(
+      return $setWidth(
         Math.min(
           limitProps.maxWidth.value,
           Math.max(limitProps.minWidth.value, val)
@@ -258,7 +259,7 @@ export function initLimitSizeAndMethods(
       )
     },
     setHeight(val: number) {
-      $setHeight(
+      return $setHeight(
         Math.min(
           limitProps.maxHeight.value,
           Math.max(limitProps.minHeight.value, val)
@@ -266,7 +267,7 @@ export function initLimitSizeAndMethods(
       )
     },
     setTop(val: number) {
-      $setTop(
+      return $setTop(
         Math.min(
           limitProps.maxTop.value,
           Math.max(limitProps.minTop.value, val)
@@ -274,7 +275,7 @@ export function initLimitSizeAndMethods(
       )
     },
     setLeft(val: number) {
-      $setLeft(
+      return $setLeft(
         Math.min(
           limitProps.maxLeft.value,
           Math.max(limitProps.minLeft.value, val)
@@ -341,7 +342,6 @@ export function initResizeHandle(
   let lstPageX = 0
   let lstPageY = 0
   const resizeHandleDrag = (e: MouseEvent) => {
-    emit('resizing')
     const deltaX = e.pageX - lstPageX
     const deltaY = e.pageY - lstPageY
     const idx0 = resizingHandle.value[0]
@@ -358,9 +358,20 @@ export function initResizeHandle(
     } else if (idx0 === 'b') {
       setHeight(lstH + deltaY)
     }
+    emit('resizing', {
+      x: left.value,
+      y: top.value,
+      w: width.value,
+      h: height.value
+    })
   }
   const resizeHandleUp = (e: MouseEvent) => {
-    emit('resize-end')
+    emit('resize-end', {
+      x: left.value,
+      y: top.value,
+      w: width.value,
+      h: height.value
+    })
     setResizingHandle('')
     setResizing(false)
     document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
@@ -370,13 +381,18 @@ export function initResizeHandle(
     setResizingHandle(handleType)
     setResizing(true)
     e.stopPropagation()
-    emit('resize-start')
     lstW = width.value
     lstH = height.value
     lstX = left.value
     lstY = top.value
     lstPageX = e.pageX
     lstPageY = e.pageY
+    emit('resize-start', {
+      x: left.value,
+      y: top.value,
+      w: width.value,
+      h: height.value
+    })
     document.documentElement.addEventListener('mousemove', resizeHandleDrag)
     document.documentElement.addEventListener('mouseup', resizeHandleUp)
   }
