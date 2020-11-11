@@ -8,47 +8,45 @@
 
 </div>
 
-> [ Vue3 Component ] Draggable and resizable component for vue3
+> [ Vue3 Component ] Vue3的拖拽缩放容器
 
-[点击查看中文文档](https://github.com/a7650/vue3-draggable-resizable/blob/main/docs/document_zh.md)
+### 特性
 
-### Features
+- 支持拖拽和缩放，可分别定义开启或关闭
+- 自定义缩放句柄（缩放时共有八个方位可操作，可分别定义开启或关闭）
+- 限制组件的拖动和缩放在其父节点内
+- 自定义组件内各种类名
+- 缩放句柄的类名也可自定义
 
-- Draggable and resizable
-- Define handles for resizing
-- Restrict movement and size in parent node
-- Customize various class names
-- Provide your own markup for handles
-
-### Usage
+### 使用
 
 ```bash
 $ npm install vue3-draggable-resizable
 ```
 
-Register the Vue3DraggableResizable
+使用use方法注册组件
 
 ```js
 // >main.js
 import { createApp } from 'vue'
 import App from './App.vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-//default styles
+//需引入默认样式
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
-// You will have a global component named "Vue3DraggableResizable"
+// 你将会获得一个名为Vue3DraggableResizable的全局组件
 createApp(App)
   .use(Vue3DraggableResizable)
   .mount('#app')
 ```
 
-You can also use it separately within the component
+也可以单独在你的组件内部使用
 
 ```js
 // >component.js
 import { defineComponent } from 'vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-//default styles
+//需引入默认样式
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 export default defineComponent({
@@ -57,7 +55,7 @@ export default defineComponent({
 })
 ```
 
-Here is a complete example of using "vue-template"
+下面是一个使用vue-template语法写的例子
 
 ```vue
 <template>
@@ -131,7 +129,7 @@ export default defineComponent({
 type: `Number`<br>
 default: `null`<br>
 
-Set initial width(px)
+设置初始宽度（px）
 
 ```html
 <Vue3DraggableResizable :initW="100" />
@@ -142,7 +140,7 @@ Set initial width(px)
 type: `Number`<br>
 default: `null`<br>
 
-Set initial height(px)
+设置初始高度（px）
 
 ```html
 <Vue3DraggableResizable :initH="100" />
@@ -153,8 +151,8 @@ Set initial height(px)
 type: `Number`<br>
 default: `0`<br>
 
-Current width(px) of the container.<br>
-You can use "v-model:w" to keeps it up-to-date
+组件的当前宽度（px）<br>
+你可以使用“v-model:w”语法使它和父组件保持一致
 
 ```html
 <Vue3DraggableResizable v-model:w="100" />
@@ -165,8 +163,8 @@ You can use "v-model:w" to keeps it up-to-date
 type: `Number`<br>
 default: `0`<br>
 
-Current height(px) of the container.<br>
-You can use "v-model:h" to keeps it up-to-date
+组件的当前高度（px）<br>
+你可以使用“v-model:h”语法使它和父组件保持一致
 
 ```html
 <Vue3DraggableResizable v-model:h="100" />
@@ -177,8 +175,8 @@ You can use "v-model:h" to keeps it up-to-date
 type: `Number`<br>
 default: `0`<br>
 
-Current left(px) of the container.<br>
-You can use "v-model:x" to keeps it up-to-date
+组件距离父容器的左侧的距离（px）<br>
+你可以使用“v-model:x”语法使它和父组件保持一致
 
 ```html
 <Vue3DraggableResizable v-model:x="100" />
@@ -189,8 +187,8 @@ You can use "v-model:x" to keeps it up-to-date
 type: `Number`<br>
 default: `0`<br>
 
-The current top(px) of the container.<br>
-You can use "v-model:y" to keeps it up-to-date
+组件距离父容器顶部的距离（px）<br>
+你可以使用“v-model:y”语法使它和父组件保持一致
 
 ```html
 <Vue3DraggableResizable v-model:y="100" />
@@ -201,7 +199,7 @@ You can use "v-model:y" to keeps it up-to-date
 type: `Number`<br>
 default: `20`<br>
 
-Minimum width(px)
+组件的最小宽度（px）
 
 ```html
 <Vue3DraggableResizable :minW="100" />
@@ -212,7 +210,7 @@ Minimum width(px)
 type: `Number`<br>
 default: `20`<br>
 
-Minimum height(px)
+组件的最小高度（px）
 
 ```html
 <Vue3DraggableResizable :minH="100" />
@@ -223,8 +221,8 @@ Minimum height(px)
 type: `Boolean`<br>
 default: `false`<br>
 
-Indicates whether the component is selected.<br>
-You can use "v-model:active" to keeps it up-to-date
+组件当前是否处于活跃状态<br>
+你可以使用“v-model:active”语法使它和父组件保持一致
 
 ```html
 <Vue3DraggableResizable v-model:active="100" />
@@ -235,7 +233,7 @@ You can use "v-model:active" to keeps it up-to-date
 type: `Boolean`<br>
 default: `true`<br>
 
-Defines the component can be draggable or not
+组件是否可拖动
 
 ```html
 <Vue3DraggableResizable :draggable="true" />
@@ -246,7 +244,7 @@ Defines the component can be draggable or not
 type: `Boolean`<br>
 default: `true`<br>
 
-Defines the component can be resizable or not
+组件是否可调整大小
 
 ```html
 <Vue3DraggableResizable :draggable="true" />
@@ -257,7 +255,7 @@ Defines the component can be resizable or not
 type: `Boolean`<br>
 default: `false`<br>
 
-Restrict movement and size within its parent node
+是否将组件的拖动和缩放限制在其父节点内，即组件不会超出父节点，默认关闭
 
 ```html
 <Vue3DraggableResizable :parent="true" />
@@ -268,16 +266,16 @@ Restrict movement and size within its parent node
 type: `Array`<br>
 default: `['tl', 'tm', 'tr', 'ml', 'mr', 'bl', 'bm', 'br']`
 
-Define the array of handles to restrict the element resizing
+定义缩放的句柄（共八个方向）
 
-- `tl` : Top left
-- `tm` : Top middle
-- `tr` : Top right
-- `mr` : Middle right
-- `ml` : Middle left
-- `bl` : Bottom left
-- `bm` : Bottom middle
-- `br` : Bottom right
+- `tl` : 上左
+- `tm` : 上中
+- `tr` : 上右
+- `mr` : 中左
+- `ml` : 中右
+- `bl` : 下左
+- `bm` : 下中
+- `br` : 下右
 
 ```html
 <Vue3DraggableResizable :handles="['tl','tr','bl','br']" />
@@ -288,7 +286,7 @@ Define the array of handles to restrict the element resizing
 type: `String`<br>
 default: `draggable`
 
-Used to set the custom `class` of a draggable-resizable component when `draggable` is enable.
+自定义组件的类名，该类名在组件是“可拖动”时显示
 
 ```html
 <Vue3DraggableResizable classNameDraggable="draggable" />
@@ -299,7 +297,7 @@ Used to set the custom `class` of a draggable-resizable component when `draggabl
 type: `String`<br>
 default: `resizable`
 
-Used to set the custom `class` of a draggable-resizable component when `resizable` is enable.
+自定义组件类名，该类名在组件是“可缩放”时显示
 
 ```html
 <Vue3DraggableResizable classNameResizable="resizable" />
@@ -310,7 +308,7 @@ Used to set the custom `class` of a draggable-resizable component when `resizabl
 type: `String`<br>
 default: `dragging`
 
-Used to set the custom `class` of a draggable-resizable component when is dragging.
+定义组件在拖动时显示的类名
 
 ```html
 <Vue3DraggableResizable classNameDragging="dragging" />
@@ -321,7 +319,7 @@ Used to set the custom `class` of a draggable-resizable component when is draggi
 type: `String`<br>
 default: `resizing`
 
-Used to set the custom `class` of a draggable-resizable component when is resizing.
+定义组件在缩放时显示的类名
 
 ```html
 <Vue3DraggableResizable classNameResizing="resizing" />
@@ -332,7 +330,7 @@ Used to set the custom `class` of a draggable-resizable component when is resizi
 type: `String`<br>
 default: `active`
 
-Used to set the custom `class` of a draggable-resizable component when is active.
+定义组件在活跃状态下的类名
 
 ```html
 <Vue3DraggableResizable classNameActive="active"></Vue3DraggableResizable>
@@ -343,12 +341,12 @@ Used to set the custom `class` of a draggable-resizable component when is active
 type: `String`<br>
 default: `handle`
 
-Used to set the custom common `class` of each handle element.
+定义缩放句柄的类名
 
 ```html
 <Vue3DraggableResizable classNameHandle="my-handle" />
 ```
-following handle nodes will be rendered
+以上设置将会渲染出下面的缩放句柄节点（my-handle-*）
 ```html
 ...
 <div class="vdr-handle vdr-handle-tl my-handle my-handle-tl"></div>
@@ -364,6 +362,8 @@ following handle nodes will be rendered
 
 payload: `-`
 
+组件从非活跃状态到活跃状态时触发
+
 ```html
 <Vue3DraggableResizable @activated="activatedHandle" />
 ```
@@ -371,6 +371,8 @@ payload: `-`
 #### deactivated
 
 payload: `-`
+
+组件从活跃状态到非活跃状态时触发
 
 ```html
 <Vue3DraggableResizable @deactivated="deactivatedHandle" />
@@ -380,6 +382,8 @@ payload: `-`
 
 payload: `{ x: number, y: number }`
 
+组件开始拖动时触发
+
 ```html
 <Vue3DraggableResizable @drag-start="dragStartHandle" />
 ```
@@ -387,6 +391,8 @@ payload: `{ x: number, y: number }`
 #### dragging
 
 payload: `{ x: number, y: number }v`
+
+组件在拖动过程中持续触发
 
 ```html
 <Vue3DraggableResizable @dragging="dragStartHandle" />
@@ -396,6 +402,8 @@ payload: `{ x: number, y: number }v`
 
 payload: `{ x: number, y: number }`
 
+组件拖动结束时触发
+
 ```html
 <Vue3DraggableResizable @drag-end="dragEndHandle" />
 ```
@@ -404,13 +412,17 @@ payload: `{ x: number, y: number }`
 
 payload: `{ x: number, y: number, w: number, h: number }`
 
+组件开始缩放时触发
+
 ```html
 <Vue3DraggableResizable @resize-start="resizeStartHandle" />
 ```
 
 #### resizing
 
-payload: `{ x: number, y: number, w: number, h: number }v`
+payload: `{ x: number, y: number, w: number, h: number }`
+
+组件在缩放过程中持续触发
 
 ```html
 <Vue3DraggableResizable @resizing="resizingHandle" />
@@ -419,6 +431,8 @@ payload: `{ x: number, y: number, w: number, h: number }v`
 #### resize-end
 
 payload: `{ x: number, y: number, w: number, h: number }`
+
+组件缩放结束时触发
 
 ```html
 <Vue3DraggableResizable @resize-end="resizeEndHandle" />
