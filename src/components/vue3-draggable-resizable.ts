@@ -5,7 +5,8 @@ import {
   watchProps,
   initState,
   initParent,
-  initLimitSizeAndMethods
+  initLimitSizeAndMethods,
+  initResizeHandle
 } from './hooks'
 import './index.css'
 import { getElSize } from './utils'
@@ -98,13 +99,24 @@ const VueDraggableResizable = defineComponent({
   props: VdrProps,
   emits: emits,
   setup(props, { emit }) {
-    const containerProp = initState(props, emit)
+    const containerProps = initState(props, emit)
     const containerRef = ref<HTMLElement>()
-    const { top, left, setEnable, setDragging } = containerProp
+    const {
+      top,
+      left,
+      setEnable,
+      setDragging,
+      setResizing,
+      setResizingHandle
+    } = containerProps
     const parentSize = initParent(containerRef)
-    const limitProp = initLimitSizeAndMethods(props, parentSize, containerProp)
-    watchProps(props,limitProp)
-    const { setLeft, setTop } = limitProp
+    const limitProps = initLimitSizeAndMethods(
+      props,
+      parentSize,
+      containerProps
+    )
+    watchProps(props, limitProps)
+    const { setLeft, setTop } = limitProps
     useDraggableContainer({
       containerRef,
       autoUpdate: false,
@@ -129,18 +141,24 @@ const VueDraggableResizable = defineComponent({
       },
       unselect() {
         setEnable(false)
+        setDragging(false)
+        setResizing(false)
+        setResizingHandle('')
       }
     })
+    const resizeHandle = initResizeHandle(containerProps, limitProps, emit)
     return {
       containerRef,
-      ...containerProp,
+      ...containerProps,
       ...parentSize,
-      ...limitProp
+      ...limitProps,
+      ...resizeHandle
     }
   },
   data() {
     return {}
   },
+  methods: {},
   computed: {
     style(): { [propName: string]: string } {
       return {
@@ -167,7 +185,6 @@ const VueDraggableResizable = defineComponent({
     this.setWidth(this.initW === null ? this.w || width : this.initW)
     this.setHeight(this.initH === null ? this.h || height : this.initH)
   },
-  methods: {},
   render() {
     return h(
       'div',
@@ -176,7 +193,17 @@ const VueDraggableResizable = defineComponent({
         class: ['vdr-container', this.klass],
         style: this.style
       },
-      this.$slots.default!()
+      [
+        this.$slots.default!(),
+        ...this.handles.map((item) =>
+          h('div', {
+            class: ['handle', 'handle-' + item],
+            style: { display: this.enable ? 'block' : 'none' },
+            onMousedown: (e: MouseEvent) =>
+              this.resizeHandleDown(e, <ResizingHandle>item)
+          })
+        )
+      ]
     )
   }
 })

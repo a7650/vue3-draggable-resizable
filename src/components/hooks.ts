@@ -318,3 +318,75 @@ export function watchProps(
     }
   )
 }
+
+export function initResizeHandle(
+  containerProps: ReturnType<typeof initState>,
+  limitProps: ReturnType<typeof initLimitSizeAndMethods>,
+  emit: any
+) {
+  const { setWidth, setHeight, setLeft, setTop } = limitProps
+  const {
+    width,
+    height,
+    left,
+    top,
+    resizingHandle,
+    setResizing,
+    setResizingHandle
+  } = containerProps
+  let lstW = 0
+  let lstH = 0
+  let lstX = 0
+  let lstY = 0
+  let lstPageX = 0
+  let lstPageY = 0
+  const resizeHandleDrag = (e: MouseEvent) => {
+    emit('resizing')
+    const deltaX = e.pageX - lstPageX
+    const deltaY = e.pageY - lstPageY
+    const idx0 = resizingHandle.value[0]
+    const idx1 = resizingHandle.value[1]
+    if (idx1 === 'l') {
+      setWidth(lstW - deltaX)
+      setLeft(lstX - (width.value - lstW))
+    } else if (idx1 === 'r') {
+      setWidth(lstW + deltaX)
+    }
+    if (idx0 === 't') {
+      setHeight(lstH - deltaY)
+      setTop(lstY - (height.value - lstH))
+    } else if (idx0 === 'b') {
+      setHeight(lstH + deltaY)
+    }
+  }
+  const resizeHandleUp = (e: MouseEvent) => {
+    emit('resize-end')
+    setResizingHandle('')
+    setResizing(false)
+    document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
+    document.documentElement.removeEventListener('mouseup', resizeHandleUp)
+  }
+  const resizeHandleDown = (e: MouseEvent, handleType: ResizingHandle) => {
+    setResizingHandle(handleType)
+    setResizing(true)
+    e.stopPropagation()
+    emit('resize-start')
+    lstW = width.value
+    lstH = height.value
+    lstX = left.value
+    lstY = top.value
+    lstPageX = e.pageX
+    lstPageY = e.pageY
+    document.documentElement.addEventListener('mousemove', resizeHandleDrag)
+    document.documentElement.addEventListener('mouseup', resizeHandleUp)
+  }
+  onUnmounted(() => {
+    document.documentElement.removeEventListener('mouseup', resizeHandleDrag)
+    document.documentElement.removeEventListener('mousemove', resizeHandleUp)
+  })
+  return {
+    resizeHandleDrag,
+    resizeHandleUp,
+    resizeHandleDown
+  }
+}
