@@ -13,52 +13,52 @@
 .handle {
   box-sizing: border-box;
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: #EEE;
+  width: 7px;
+  height: 7px;
+  background:#f0f0f0;
   border: 1px solid #333;
 }
 .handle-tl {
-  top: -10px;
-  left: -10px;
+  top: -4px;
+  left: -4px;
   cursor: nw-resize;
 }
 .handle-tm {
-  top: -10px;
+  top: -4px;
   left: 50%;
-  margin-left: -5px;
+  margin-left: -3px;
   cursor: n-resize;
 }
 .handle-tr {
-  top: -10px;
-  right: -10px;
+  top: -4px;
+  right: -4px;
   cursor: ne-resize;
 }
 .handle-ml {
   top: 50%;
-  margin-top: -5px;
-  left: -10px;
+  margin-top: -4px;
+  left: -4px;
   cursor: w-resize;
 }
 .handle-mr {
   top: 50%;
-  margin-top: -5px;
-  right: -10px;
+  margin-top: -4px;
+  right: -4px;
   cursor: e-resize;
 }
 .handle-bl {
-  bottom: -10px;
-  left: -10px;
+  bottom: -4px;
+  left: -4px;
   cursor: sw-resize;
 }
 .handle-bm {
-  bottom: -10px;
+  bottom: -4px;
   left: 50%;
-  margin-left: -5px;
+  margin-left: -4px;
   cursor: s-resize;
 }
 .handle-br {
-  bottom: -10px;
-  right: -10px;
+  bottom: -4px;
+  right: -4px;
   cursor: se-resize;
 }

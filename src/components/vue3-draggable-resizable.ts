@@ -9,7 +9,7 @@ import {
   initResizeHandle
 } from './hooks'
 import './index.css'
-import { getElSize } from './utils'
+import { getElSize, filterHandles } from './utils'
 import { h } from 'vue'
 
 export type ResizingHandle =
@@ -22,6 +22,16 @@ export type ResizingHandle =
   | 'bm'
   | 'br'
   | ''
+export const ALL_HANDLES: ResizingHandle[] = [
+  'tl',
+  'tm',
+  'tr',
+  'ml',
+  'mr',
+  'bl',
+  'bm',
+  'br'
+]
 
 const VdrProps = {
   initW: {
@@ -74,7 +84,10 @@ const VdrProps = {
   },
   handles: {
     type: Array,
-    default: ['tl', 'tm', 'tr', 'ml', 'mr', 'bl', 'bm', 'br']
+    default: ALL_HANDLES,
+    validator: (handles: ResizingHandle[]) => {
+      return filterHandles(handles).length === handles.length
+    }
   }
 }
 
@@ -154,7 +167,6 @@ const VueDraggableResizable = defineComponent({
   data() {
     return {}
   },
-  methods: {},
   computed: {
     style(): { [propName: string]: string } {
       return {
@@ -172,6 +184,9 @@ const VueDraggableResizable = defineComponent({
         draggable: this.draggable,
         resizable: this.resizable
       }
+    },
+    handlesFiltered(): ResizingHandle[] {
+      return filterHandles(this.handles as ResizingHandle[])
     }
   },
   mounted() {
@@ -191,7 +206,7 @@ const VueDraggableResizable = defineComponent({
       },
       [
         this.$slots.default!(),
-        ...this.handles.map((item) =>
+        ...this.handlesFiltered.map((item) =>
           h('div', {
             class: ['handle', 'handle-' + item],
             style: { display: this.enable ? 'block' : 'none' },
