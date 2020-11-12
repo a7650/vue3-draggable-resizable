@@ -101,7 +101,14 @@ export function initLimitSizeAndMethods(
   parentSize: ReturnType<typeof initParent>,
   containerProps: ReturnType<typeof initState>
 ) {
-  const { width, height, resizingMaxWidth, resizingMaxHeight } = containerProps
+  const {
+    width,
+    height,
+    left,
+    top,
+    resizingMaxWidth,
+    resizingMaxHeight
+  } = containerProps
   const { $setWidth, $setHeight, $setTop, $setLeft } = containerProps
   const { parentWidth, parentHeight } = parentSize
   const limitProps = {
@@ -140,6 +147,9 @@ export function initLimitSizeAndMethods(
   }
   const limitMethods = {
     setWidth(val: number) {
+      if (props.disabledW) {
+        return width.value
+      }
       return $setWidth(
         Math.min(
           limitProps.maxWidth.value,
@@ -148,6 +158,9 @@ export function initLimitSizeAndMethods(
       )
     },
     setHeight(val: number) {
+      if (props.disabledH) {
+        return height.value
+      }
       return $setHeight(
         Math.min(
           limitProps.maxHeight.value,
@@ -156,6 +169,9 @@ export function initLimitSizeAndMethods(
       )
     },
     setTop(val: number) {
+      if (props.disabledY) {
+        return top.value
+      }
       return $setTop(
         Math.min(
           limitProps.maxTop.value,
@@ -164,6 +180,9 @@ export function initLimitSizeAndMethods(
       )
     },
     setLeft(val: number) {
+      if (props.disabledX) {
+        return left.value
+      }
       return $setLeft(
         Math.min(
           limitProps.maxLeft.value,

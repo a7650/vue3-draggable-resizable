@@ -250,6 +250,50 @@ default: `true`<br>
 <Vue3DraggableResizable :draggable="true" />
 ```
 
+#### disabledX
+
+type: `Boolean`<br>
+default: `false`<br>
+
+是否禁止组件在 X 轴上移动
+
+```html
+<Vue3DraggableResizable :disabledX="true" />
+```
+
+#### disabledY
+
+type: `Boolean`<br>
+default: `false`<br>
+
+是否禁止组件在 Y 轴上移动
+
+```html
+<Vue3DraggableResizable :disabledY="true" />
+```
+
+#### disabledW
+
+type: `Boolean`<br>
+default: `false`<br>
+
+是否禁止组件修改宽度
+
+```html
+<Vue3DraggableResizable :disabledW="true" />
+```
+
+#### disabledH
+
+type: `Boolean`<br>
+default: `false`<br>
+
+是否禁止组件修改高度
+
+```html
+<Vue3DraggableResizable :disabledH="true" />
+```
+
 #### parent
 
 type: `Boolean`<br>

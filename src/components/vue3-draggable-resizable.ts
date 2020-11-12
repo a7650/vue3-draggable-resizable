@@ -64,6 +64,22 @@ const VdrProps = {
     type: Boolean,
     default: true
   },
+  disabledX:{
+    type: Boolean,
+    default: false
+  },
+  disabledY:{
+    type: Boolean,
+    default: false
+  },
+  disabledW:{
+    type: Boolean,
+    default: false
+  },
+  disabledH:{
+    type: Boolean,
+    default: false
+  },
   minW: {
     type: Number,
     default: 20

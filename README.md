@@ -252,6 +252,51 @@ Defines the component can be resizable or not
 <Vue3DraggableResizable :draggable="true" />
 ```
 
+#### disabledX
+
+type: `Boolean`<br>
+default: `false`<br>
+
+Defines the component can be moved on x-axis or not
+
+```html
+<Vue3DraggableResizable :disabledX="true" />
+```
+
+#### disabledY
+
+type: `Boolean`<br>
+default: `false`<br>
+
+Defines the component can be moved on y-axis or not
+
+
+```html
+<Vue3DraggableResizable :disabledY="true" />
+```
+
+#### disabledW
+
+type: `Boolean`<br>
+default: `false`<br>
+
+Defines the component`s width can be modify or not
+
+```html
+<Vue3DraggableResizable :disabledW="true" />
+```
+
+#### disabledH
+
+type: `Boolean`<br>
+default: `false`<br>
+
+Defines the component`s height can be modify or not
+
+```html
+<Vue3DraggableResizable :disabledH="true" />
+```
+
 #### parent
 
 type: `Boolean`<br>
@@ -335,7 +380,7 @@ default: `active`
 Used to set the custom `class` of a draggable-resizable component when is active.
 
 ```html
-<Vue3DraggableResizable classNameActive="active"></Vue3DraggableResizable>
+<Vue3DraggableResizable classNameActive="active" />
 ```
 
 #### classNameHandle
@@ -348,7 +393,9 @@ Used to set the custom common `class` of each handle element.
 ```html
 <Vue3DraggableResizable classNameHandle="my-handle" />
 ```
+
 following handle nodes will be rendered
+
 ```html
 ...
 <div class="vdr-handle vdr-handle-tl my-handle my-handle-tl"></div>
@@ -386,7 +433,7 @@ payload: `{ x: number, y: number }`
 
 #### dragging
 
-payload: `{ x: number, y: number }v`
+payload: `{ x: number, y: number }`
 
 ```html
 <Vue3DraggableResizable @dragging="dragStartHandle" />
