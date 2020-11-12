@@ -154,6 +154,7 @@ const VueDraggableResizable = defineComponent({
       limitProps,
       <Ref<ResizingHandle[]>>toRef(props, 'handles'),
       toRef(props,'resizable'),
+      parentSize,
       emit
     )
     watchProps(props, limitProps)

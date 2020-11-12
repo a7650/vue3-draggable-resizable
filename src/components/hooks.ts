@@ -20,6 +20,8 @@ export function initState(props: any, emit: any) {
   const [dragging, setDragging] = useState<boolean>(false)
   const [resizing, setResizing] = useState<boolean>(false)
   const [resizingHandle, setResizingHandle] = useState<ResizingHandle>('')
+  const [resizingMaxWidth, setResizingMaxWidth] = useState<number>(Infinity)
+  const [resizingMaxHeight, setResizingMaxHeight] = useState<number>(Infinity)
   watch(
     width,
     (newVal) => {
@@ -63,10 +65,14 @@ export function initState(props: any, emit: any) {
     dragging,
     resizing,
     resizingHandle,
+    resizingMaxHeight,
+    resizingMaxWidth,
     setEnable,
     setDragging,
     setResizing,
     setResizingHandle,
+    setResizingMaxHeight,
+    setResizingMaxWidth,
     $setWidth: setWidth,
     $setHeight: setHeight,
     $setTop: setTop,
@@ -93,10 +99,10 @@ export function initParent(containerRef: Ref<HTMLElement | undefined>) {
 export function initLimitSizeAndMethods(
   props: any,
   parentSize: ReturnType<typeof initParent>,
-  methods: ReturnType<typeof initState>
+  containerProps: ReturnType<typeof initState>
 ) {
-  const { width, height, top, left, resizingHandle } = methods
-  const { $setWidth, $setHeight, $setTop, $setLeft } = methods
+  const { width, height, resizingMaxWidth, resizingMaxHeight } = containerProps
+  const { $setWidth, $setHeight, $setTop, $setLeft } = containerProps
   const { parentWidth, parentHeight } = parentSize
   const limitProps = {
     minWidth: computed(() => {
@@ -108,24 +114,14 @@ export function initLimitSizeAndMethods(
     maxWidth: computed(() => {
       let max = Infinity
       if (props.parent) {
-        max = Math.min(
-          parentWidth.value,
-          resizingHandle.value[1] === 'l'
-            ? left.value + width.value
-            : parentWidth.value - left.value
-        )
+        max = Math.min(parentWidth.value, resizingMaxWidth.value)
       }
       return max
     }),
     maxHeight: computed(() => {
       let max = Infinity
       if (props.parent) {
-        max = Math.min(
-          parentHeight.value,
-          resizingHandle.value[0] === 't'
-            ? top.value + height.value
-            : parentHeight.value - top.value
-        )
+        max = Math.min(parentHeight.value, resizingMaxHeight.value)
       }
       return max
     }),
@@ -264,18 +260,18 @@ export function initResizeHandle(
   limitProps: ReturnType<typeof initLimitSizeAndMethods>,
   handles: Ref<ResizingHandle[]>,
   resizable: Ref<boolean>,
+  parentSize: ReturnType<typeof initParent>,
   emit: any
 ) {
   const { setWidth, setHeight, setLeft, setTop } = limitProps
+  const { width, height, left, top, resizingHandle } = containerProps
   const {
-    width,
-    height,
-    left,
-    top,
-    resizingHandle,
     setResizing,
-    setResizingHandle
+    setResizingHandle,
+    setResizingMaxWidth,
+    setResizingMaxHeight
   } = containerProps
+  const { parentWidth, parentHeight } = parentSize
   let lstW = 0
   let lstH = 0
   let lstX = 0
@@ -315,14 +311,26 @@ export function initResizeHandle(
     })
     setResizingHandle('')
     setResizing(false)
+    setResizingMaxWidth(Infinity)
+    setResizingMaxHeight(Infinity)
     document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
     document.documentElement.removeEventListener('mouseup', resizeHandleUp)
   }
   const resizeHandleDown = (e: MouseEvent, handleType: ResizingHandle) => {
     if (!resizable.value) return
+    e.stopPropagation()
     setResizingHandle(handleType)
     setResizing(true)
-    e.stopPropagation()
+    setResizingMaxWidth(
+      handleType[1] === 'l'
+        ? left.value + width.value
+        : parentWidth.value - left.value
+    )
+    setResizingMaxHeight(
+      handleType[0] === 't'
+        ? top.value + height.value
+        : parentHeight.value - top.value
+    )
     lstW = width.value
     lstH = height.value
     lstX = left.value
