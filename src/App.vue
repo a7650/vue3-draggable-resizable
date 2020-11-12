@@ -27,9 +27,9 @@
         v-model:h="h"
         v-model:active="active"
         :draggable="draggable"
-        :resizable="true"
+        :resizable="resizable"
         :parent="true"
-        classNameHandle='my-handle'
+        classNameHandle="my-handle"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
         @drag-start="print('drag-start', $event)"
@@ -58,7 +58,8 @@ export default defineComponent({
       h: 100,
       w: 100,
       active: false,
-      draggable: true
+      draggable: true,
+      resizable: true
     }
   },
   mounted() {},

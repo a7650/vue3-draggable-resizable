@@ -1,7 +1,6 @@
-import { defineComponent, onMounted, ref, toRef, toRefs } from 'vue'
+import { defineComponent, ref, toRef, h, Ref } from 'vue'
 import {
-  useDraggableContainer,
-  useState,
+  initDraggableContainer,
   watchProps,
   initState,
   initParent,
@@ -10,7 +9,6 @@ import {
 } from './hooks'
 import './index.css'
 import { getElSize, filterHandles } from './utils'
-import { h } from 'vue'
 
 export type ResizingHandle =
   | 'tl'
@@ -138,48 +136,27 @@ const VueDraggableResizable = defineComponent({
   setup(props, { emit }) {
     const containerProps = initState(props, emit)
     const containerRef = ref<HTMLElement>()
-    const {
-      top,
-      left,
-      setEnable,
-      setDragging,
-      setResizing,
-      setResizingHandle
-    } = containerProps
     const parentSize = initParent(containerRef)
     const limitProps = initLimitSizeAndMethods(
       props,
       parentSize,
       containerProps
     )
-    watchProps(props, limitProps)
-    const { setLeft, setTop } = limitProps
-    useDraggableContainer({
+    initDraggableContainer(
       containerRef,
-      autoUpdate: false,
-      enable: toRef(props, 'draggable'),
-      x: left,
-      y: top,
-      dragStart({ x, y }) {
-        emit('drag-start', { x: setLeft(x), y: setTop(y) })
-        setEnable(true)
-        setDragging(true)
-      },
-      dragging({ x, y }) {
-        emit('dragging', { x: setLeft(x), y: setTop(y) })
-      },
-      dragEnd({ x, y }) {
-        emit('drag-end', { x: setLeft(x), y: setTop(y) })
-        setDragging(false)
-      },
-      unselect() {
-        setEnable(false)
-        setDragging(false)
-        setResizing(false)
-        setResizingHandle('')
-      }
-    })
-    const resizeHandle = initResizeHandle(containerProps, limitProps, emit)
+      containerProps,
+      limitProps,
+      toRef(props, 'draggable'),
+      emit
+    )
+    const resizeHandle = initResizeHandle(
+      containerProps,
+      limitProps,
+      <Ref<ResizingHandle[]>>toRef(props, 'handles'),
+      toRef(props,'resizable'),
+      emit
+    )
+    watchProps(props, limitProps)
     return {
       containerRef,
       ...containerProps,
@@ -187,9 +164,6 @@ const VueDraggableResizable = defineComponent({
       ...limitProps,
       ...resizeHandle
     }
-  },
-  data() {
-    return {}
   },
   computed: {
     style(): { [propName: string]: string } {
@@ -208,9 +182,6 @@ const VueDraggableResizable = defineComponent({
         [this.classNameDraggable]: this.draggable,
         [this.classNameResizable]: this.resizable
       }
-    },
-    handlesFiltered(): ResizingHandle[] {
-      return filterHandles(this.handles as ResizingHandle[])
     }
   },
   mounted() {

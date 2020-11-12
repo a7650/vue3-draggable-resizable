@@ -1,105 +1,6 @@
-import {
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  Ref,
-  computed,
-  reactive
-} from 'vue'
-import { getElSize } from './utils'
+import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
+import { getElSize, filterHandles } from './utils'
 import { ResizingHandle } from './vue3-draggable-resizable'
-
-type DragHandleFn = ({ x, y }: { x: number; y: number }) => void
-
-interface Params {
-  containerRef: Ref<HTMLElement | undefined>
-  dragStart?: DragHandleFn
-  dragEnd?: DragHandleFn
-  dragging?: DragHandleFn
-  x?: Ref<number>
-  y?: Ref<number>
-  autoUpdate?: boolean
-  unselect?: () => void
-  enable?: Ref<boolean>
-}
-
-export function useDraggableContainer(options: Params) {
-  const {
-    dragStart,
-    dragEnd,
-    dragging,
-    autoUpdate = true,
-    unselect,
-    enable,
-    containerRef
-  } = options
-  let { x = ref(0), y = ref(0) } = options
-  let lstX = 0
-  let lstY = 0
-  let lstPageX = 0
-  let lstPageY = 0
-  const isDragging = ref(false)
-  const _unselect = (e: MouseEvent) => {
-    const target = e.target
-    if (!containerRef.value?.contains(<Node>target) && unselect) {
-      unselect()
-    }
-  }
-  const handleUp = (e: MouseEvent) => {
-    isDragging.value = false
-    document.documentElement.removeEventListener('mouseup', handleUp)
-    document.documentElement.removeEventListener('mousemove', handleDrag)
-  }
-  const handleDrag = (e: MouseEvent) => {
-    if (!(isDragging.value && containerRef.value)) return
-    const { pageX, pageY } = e
-    const deltaX = pageX - lstPageX
-    const deltaY = pageY - lstPageY
-    // x.value = x.value + deltaX
-    // y.value = y.value + deltaY
-    // lstX = pageX
-    // lstY = pageY
-    dragging && dragging({ x: lstX + deltaX, y: lstY + deltaY })
-    if (autoUpdate) {
-      containerRef.value.style.left = x + 'px'
-      containerRef.value.style.top = y + 'px'
-    }
-  }
-  const handleDown = (e: MouseEvent) => {
-    if (!enable || enable.value) {
-      isDragging.value = true
-      lstX = x.value
-      lstY = y.value
-      lstPageX = e.pageX
-      lstPageY = e.pageY
-      document.documentElement.addEventListener('mousemove', handleDrag)
-      document.documentElement.addEventListener('mouseup', handleUp)
-    }
-  }
-  watch(isDragging, (cur, pre) => {
-    if (!pre && cur) {
-      dragStart && dragStart({ x: x.value, y: y.value })
-    } else {
-      dragEnd && dragEnd({ x: x.value, y: y.value })
-    }
-  })
-  onMounted(() => {
-    const el = containerRef.value
-    if (!el) return
-    el.style.left = x + 'px'
-    el.style.top = y + 'px'
-    document.documentElement.addEventListener('mousedown', _unselect)
-    el.addEventListener('mousedown', handleDown)
-  })
-  onUnmounted(() => {
-    if (!containerRef.value) return
-    document.documentElement.removeEventListener('mousedown', _unselect)
-    document.documentElement.removeEventListener('mouseup', handleUp)
-    document.documentElement.removeEventListener('mousemove', handleDrag)
-  })
-  return { containerRef }
-}
 
 export function useState<T>(initialState: T): [Ref<T>, (value: T) => T] {
   const state = ref(initialState) as Ref<T>
@@ -119,14 +20,6 @@ export function initState(props: any, emit: any) {
   const [dragging, setDragging] = useState<boolean>(false)
   const [resizing, setResizing] = useState<boolean>(false)
   const [resizingHandle, setResizingHandle] = useState<ResizingHandle>('')
-  // const mouseClickSnapshot = reactive({
-  //   x: 0,
-  //   y: 0,
-  //   w: 0,
-  //   h: 0,
-  //   pageX: 0,
-  //   pageY: 0
-  // })
   watch(
     width,
     (newVal) => {
@@ -289,40 +182,88 @@ export function initLimitSizeAndMethods(
   }
 }
 
-export function watchProps(
-  props: any,
-  limits: ReturnType<typeof initLimitSizeAndMethods>
+export function initDraggableContainer(
+  containerRef: Ref<HTMLElement | undefined>,
+  containerProps: ReturnType<typeof initState>,
+  limitProps: ReturnType<typeof initLimitSizeAndMethods>,
+  draggable: Ref<boolean>,
+  emit: any
 ) {
-  const { setWidth, setHeight, setLeft, setTop } = limits
-  watch(
-    () => props.w,
-    (newVal: number) => {
-      setWidth(newVal)
+  const { left: x, top: y, dragging } = containerProps
+  const {
+    setDragging,
+    setEnable,
+    setResizing,
+    setResizingHandle
+  } = containerProps
+  const { setTop, setLeft } = limitProps
+  let lstX = 0
+  let lstY = 0
+  let lstPageX = 0
+  let lstPageY = 0
+  const _unselect = (e: MouseEvent) => {
+    const target = e.target
+    if (!containerRef.value?.contains(<Node>target)) {
+      setEnable(false)
+      setDragging(false)
+      setResizing(false)
+      setResizingHandle('')
     }
-  )
-  watch(
-    () => props.h,
-    (newVal: number) => {
-      setHeight(newVal)
+  }
+  const handleUp = (e: MouseEvent) => {
+    setDragging(false)
+    document.documentElement.removeEventListener('mouseup', handleUp)
+    document.documentElement.removeEventListener('mousemove', handleDrag)
+  }
+  const handleDrag = (e: MouseEvent) => {
+    if (!(dragging.value && containerRef.value)) return
+    const { pageX, pageY } = e
+    const deltaX = pageX - lstPageX
+    const deltaY = pageY - lstPageY
+    emit('dragging', { x: setLeft(lstX + deltaX), y: setTop(lstY + deltaY) })
+  }
+  const handleDown = (e: MouseEvent) => {
+    if (!draggable.value) return
+    setDragging(true)
+    lstX = x.value
+    lstY = y.value
+    lstPageX = e.pageX
+    lstPageY = e.pageY
+    document.documentElement.addEventListener('mousemove', handleDrag)
+    document.documentElement.addEventListener('mouseup', handleUp)
+  }
+  watch(dragging, (cur, pre) => {
+    if (!pre && cur) {
+      emit('drag-start', { x: x.value, y: y.value })
+      setEnable(true)
+      setDragging(true)
+    } else {
+      emit('drag-end', { x: x.value, y: y.value })
+      setDragging(false)
     }
-  )
-  watch(
-    () => props.x,
-    (newVal: number) => {
-      setLeft(newVal)
-    }
-  )
-  watch(
-    () => props.y,
-    (newVal: number) => {
-      setTop(newVal)
-    }
-  )
+  })
+  onMounted(() => {
+    const el = containerRef.value
+    if (!el) return
+    el.style.left = x + 'px'
+    el.style.top = y + 'px'
+    document.documentElement.addEventListener('mousedown', _unselect)
+    el.addEventListener('mousedown', handleDown)
+  })
+  onUnmounted(() => {
+    if (!containerRef.value) return
+    document.documentElement.removeEventListener('mousedown', _unselect)
+    document.documentElement.removeEventListener('mouseup', handleUp)
+    document.documentElement.removeEventListener('mousemove', handleDrag)
+  })
+  return { containerRef }
 }
 
 export function initResizeHandle(
   containerProps: ReturnType<typeof initState>,
   limitProps: ReturnType<typeof initLimitSizeAndMethods>,
+  handles: Ref<ResizingHandle[]>,
+  resizable: Ref<boolean>,
   emit: any
 ) {
   const { setWidth, setHeight, setLeft, setTop } = limitProps
@@ -378,6 +319,7 @@ export function initResizeHandle(
     document.documentElement.removeEventListener('mouseup', resizeHandleUp)
   }
   const resizeHandleDown = (e: MouseEvent, handleType: ResizingHandle) => {
+    if (!resizable.value) return
     setResizingHandle(handleType)
     setResizing(true)
     e.stopPropagation()
@@ -400,9 +342,42 @@ export function initResizeHandle(
     document.documentElement.removeEventListener('mouseup', resizeHandleDrag)
     document.documentElement.removeEventListener('mousemove', resizeHandleUp)
   })
+  const handlesFiltered = computed(() =>
+    resizable.value ? filterHandles(handles.value) : []
+  )
   return {
-    resizeHandleDrag,
-    resizeHandleUp,
+    handlesFiltered,
     resizeHandleDown
   }
+}
+
+export function watchProps(
+  props: any,
+  limits: ReturnType<typeof initLimitSizeAndMethods>
+) {
+  const { setWidth, setHeight, setLeft, setTop } = limits
+  watch(
+    () => props.w,
+    (newVal: number) => {
+      setWidth(newVal)
+    }
+  )
+  watch(
+    () => props.h,
+    (newVal: number) => {
+      setHeight(newVal)
+    }
+  )
+  watch(
+    () => props.x,
+    (newVal: number) => {
+      setLeft(newVal)
+    }
+  )
+  watch(
+    () => props.y,
+    (newVal: number) => {
+      setTop(newVal)
+    }
+  )
 }
