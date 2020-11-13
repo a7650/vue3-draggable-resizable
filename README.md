@@ -252,6 +252,17 @@ Defines the component can be resizable or not
 <Vue3DraggableResizable :draggable="true" />
 ```
 
+#### lockAspectRatio
+
+type: `Boolean`<br>
+default: `false`<br>
+
+The `lockAspectRatio` property is used to lock aspect ratio. 
+
+```html
+<Vue3DraggableResizable :lockAspectRatio="true" />
+```
+
 #### disabledX
 
 type: `Boolean`<br>

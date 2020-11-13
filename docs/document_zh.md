@@ -250,6 +250,17 @@ default: `true`<br>
 <Vue3DraggableResizable :draggable="true" />
 ```
 
+#### lockAspectRatio
+
+type: `Boolean`<br>
+default: `false`<br>
+
+该属性用来设置是否锁定比例
+
+```html
+<Vue3DraggableResizable :lockAspectRatio="true" />
+```
+
 #### disabledX
 
 type: `Boolean`<br>
