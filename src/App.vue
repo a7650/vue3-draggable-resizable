@@ -19,8 +19,8 @@
     <div>active:{{ active }}<br /></div>
     <div class="parent">
       <Vue3DraggableResizable
-        :initW="110"
-        :initH="120"
+        :initW="40"
+        :initH="80"
         v-model:x="x"
         v-model:y="y"
         v-model:w="w"
@@ -28,11 +28,12 @@
         v-model:active="active"
         :draggable="draggable"
         :resizable="resizable"
-        :parent="true"
-        :disabledX="true"
+        :parent="false"
+        :disabledX="false"
         :disabledW="false"
         :disabledH="false"
         :disabledY="false"
+        :lockAspectRatio="true"
         classNameHandle="my-handle"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
@@ -69,7 +70,7 @@ export default defineComponent({
   mounted() {},
   methods: {
     print(val, e) {
-      console.log(val, e)
+      // console.log(val, e)
     }
   }
 })

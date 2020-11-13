@@ -22,6 +22,9 @@ export function initState(props: any, emit: any) {
   const [resizingHandle, setResizingHandle] = useState<ResizingHandle>('')
   const [resizingMaxWidth, setResizingMaxWidth] = useState<number>(Infinity)
   const [resizingMaxHeight, setResizingMaxHeight] = useState<number>(Infinity)
+  const [resizingMinWidth, setResizingMinWidth] = useState<number>(props.minW)
+  const [resizingMinHeight, setResizingMinHeight] = useState<number>(props.minH)
+  const aspectRatio = computed(() => height.value / width.value)
   watch(
     width,
     (newVal) => {
@@ -67,16 +70,21 @@ export function initState(props: any, emit: any) {
     resizingHandle,
     resizingMaxHeight,
     resizingMaxWidth,
+    resizingMinWidth,
+    resizingMinHeight,
+    aspectRatio,
     setEnable,
     setDragging,
     setResizing,
     setResizingHandle,
     setResizingMaxHeight,
     setResizingMaxWidth,
-    $setWidth: setWidth,
-    $setHeight: setHeight,
-    $setTop: setTop,
-    $setLeft: setLeft
+    setResizingMinWidth,
+    setResizingMinHeight,
+    $setWidth: (val: number) => setWidth(Math.floor(val)),
+    $setHeight: (val: number) => setHeight(Math.floor(val)),
+    $setTop: (val: number) => setTop(Math.floor(val)),
+    $setLeft: (val: number) => setLeft(Math.floor(val))
   }
 }
 
@@ -107,16 +115,18 @@ export function initLimitSizeAndMethods(
     left,
     top,
     resizingMaxWidth,
-    resizingMaxHeight
+    resizingMaxHeight,
+    resizingMinWidth,
+    resizingMinHeight
   } = containerProps
   const { $setWidth, $setHeight, $setTop, $setLeft } = containerProps
   const { parentWidth, parentHeight } = parentSize
   const limitProps = {
     minWidth: computed(() => {
-      return props.minW as number
+      return resizingMinWidth.value
     }),
     minHeight: computed(() => {
-      return props.minH as number
+      return resizingMinHeight.value
     }),
     maxWidth: computed(() => {
       let max = Infinity
@@ -277,18 +287,19 @@ export function initDraggableContainer(
 export function initResizeHandle(
   containerProps: ReturnType<typeof initState>,
   limitProps: ReturnType<typeof initLimitSizeAndMethods>,
-  handles: Ref<ResizingHandle[]>,
-  resizable: Ref<boolean>,
   parentSize: ReturnType<typeof initParent>,
+  props: any,
   emit: any
 ) {
   const { setWidth, setHeight, setLeft, setTop } = limitProps
-  const { width, height, left, top, resizingHandle } = containerProps
+  const { width, height, left, top, aspectRatio } = containerProps
   const {
     setResizing,
     setResizingHandle,
     setResizingMaxWidth,
-    setResizingMaxHeight
+    setResizingMaxHeight,
+    setResizingMinWidth,
+    setResizingMinHeight
   } = containerProps
   const { parentWidth, parentHeight } = parentSize
   let lstW = 0
@@ -297,22 +308,40 @@ export function initResizeHandle(
   let lstY = 0
   let lstPageX = 0
   let lstPageY = 0
+  let tmpAspectRatio = 1
+  let idx0 = ''
+  let idx1 = ''
   const resizeHandleDrag = (e: MouseEvent) => {
-    const deltaX = e.pageX - lstPageX
-    const deltaY = e.pageY - lstPageY
-    const idx0 = resizingHandle.value[0]
-    const idx1 = resizingHandle.value[1]
-    if (idx1 === 'l') {
-      setWidth(lstW - deltaX)
-      setLeft(lstX - (width.value - lstW))
-    } else if (idx1 === 'r') {
-      setWidth(lstW + deltaX)
+    let deltaX = e.clientX - lstPageX
+    let deltaY = e.clientY - lstPageY
+    let _deltaX = deltaX
+    let _deltaY = deltaY
+    if (props.lockAspectRatio) {
+      deltaX = Math.abs(deltaX)
+      deltaY = deltaX * tmpAspectRatio
+      if (idx0 === 't') {
+        if (_deltaX < 0 || (idx1 === 'm' && _deltaY < 0)) {
+          deltaX = -deltaX
+          deltaY = -deltaY
+        }
+      } else {
+        if (_deltaX < 0 || (idx1 === 'm' && _deltaY < 0)) {
+          deltaX = -deltaX
+          deltaY = -deltaY
+        }
+      }
     }
     if (idx0 === 't') {
       setHeight(lstH - deltaY)
       setTop(lstY - (height.value - lstH))
     } else if (idx0 === 'b') {
       setHeight(lstH + deltaY)
+    }
+    if (idx1 === 'l') {
+      setWidth(lstW - deltaX)
+      setLeft(lstX - (width.value - lstW))
+    } else if (idx1 === 'r') {
+      setWidth(lstW + deltaX)
     }
     emit('resizing', {
       x: left.value,
@@ -332,30 +361,58 @@ export function initResizeHandle(
     setResizing(false)
     setResizingMaxWidth(Infinity)
     setResizingMaxHeight(Infinity)
+    setResizingMinWidth(props.minW)
+    setResizingMinHeight(props.minH)
     document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
     document.documentElement.removeEventListener('mouseup', resizeHandleUp)
   }
   const resizeHandleDown = (e: MouseEvent, handleType: ResizingHandle) => {
-    if (!resizable.value) return
+    if (!props.resizable) return
     e.stopPropagation()
     setResizingHandle(handleType)
     setResizing(true)
-    setResizingMaxWidth(
-      handleType[1] === 'l'
-        ? left.value + width.value
-        : parentWidth.value - left.value
-    )
-    setResizingMaxHeight(
-      handleType[0] === 't'
-        ? top.value + height.value
-        : parentHeight.value - top.value
-    )
+    idx0 = handleType[0]
+    idx1 = handleType[1]
+    if (aspectRatio.value) {
+      if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
+        idx0 = 't'
+        idx1 = 'l'
+      } else {
+        idx0 = 'b'
+        idx1 = 'r'
+      }
+    }
+    let minHeight = props.minH as number
+    let minWidth = props.minW as number
+    if (minHeight / minWidth > aspectRatio.value) {
+      minWidth = minHeight / aspectRatio.value
+    } else {
+      minHeight = minWidth * aspectRatio.value
+    }
+    setResizingMinWidth(minWidth)
+    setResizingMinHeight(minHeight)
+    if (parent) {
+      let maxHeight =
+        idx0 === 't' ? top.value + height.value : parentHeight.value - top.value
+      let maxWidth =
+        idx1 === 'l' ? left.value + width.value : parentWidth.value - left.value
+      if (props.lockAspectRatio) {
+        if (maxHeight / maxWidth < aspectRatio.value) {
+          maxWidth = maxHeight / aspectRatio.value
+        } else {
+          maxHeight = maxWidth * aspectRatio.value
+        }
+      }
+      setResizingMaxHeight(maxHeight)
+      setResizingMaxWidth(maxWidth)
+    }
     lstW = width.value
     lstH = height.value
     lstX = left.value
     lstY = top.value
-    lstPageX = e.pageX
-    lstPageY = e.pageY
+    lstPageX = e.clientX
+    lstPageY = e.clientY
+    tmpAspectRatio = aspectRatio.value
     emit('resize-start', {
       x: left.value,
       y: top.value,
@@ -370,7 +427,7 @@ export function initResizeHandle(
     document.documentElement.removeEventListener('mousemove', resizeHandleUp)
   })
   const handlesFiltered = computed(() =>
-    resizable.value ? filterHandles(handles.value) : []
+    props.resizable ? filterHandles(props.handles) : []
   )
   return {
     handlesFiltered,

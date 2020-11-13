@@ -64,19 +64,19 @@ const VdrProps = {
     type: Boolean,
     default: true
   },
-  disabledX:{
+  disabledX: {
     type: Boolean,
     default: false
   },
-  disabledY:{
+  disabledY: {
     type: Boolean,
     default: false
   },
-  disabledW:{
+  disabledW: {
     type: Boolean,
     default: false
   },
-  disabledH:{
+  disabledH: {
     type: Boolean,
     default: false
   },
@@ -126,6 +126,10 @@ const VdrProps = {
   classNameHandle: {
     type: String,
     default: 'handle'
+  },
+  lockAspectRatio: {
+    type: Boolean,
+    default: false
   }
 }
 
@@ -168,9 +172,8 @@ const VueDraggableResizable = defineComponent({
     const resizeHandle = initResizeHandle(
       containerProps,
       limitProps,
-      <Ref<ResizingHandle[]>>toRef(props, 'handles'),
-      toRef(props,'resizable'),
       parentSize,
+      props,
       emit
     )
     watchProps(props, limitProps)
@@ -217,6 +220,7 @@ const VueDraggableResizable = defineComponent({
         style: this.style
       },
       [
+        this.aspectRatio,
         this.$slots.default!(),
         ...this.handlesFiltered.map((item) =>
           h('div', {
