@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/a7650/vue3-draggable-resizable/blob/main/docs/logo.png" alt="logo"></p>
+
 <h1 align="center">Vue3DraggableResizable</h1>
 <div align="center">
 
