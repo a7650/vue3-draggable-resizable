@@ -46,13 +46,18 @@
       >
         This is a test example
       </Vue3DraggableResizable> -->
-      <DraggableContainer :referenceLineVisible="true" referenceLineColor="#0ff">
-        <Vue3DraggableResizable :initW="40" :initH="50"
-          >Rect1</Vue3DraggableResizable
-        >
-        <Vue3DraggableResizable :initW="40" :initH="50" :x="100" :y="200"
-          >Rect2</Vue3DraggableResizable
-        >
+      <DraggableContainer
+        :referenceLineVisible="true"
+        referenceLineColor="#f00"
+        :adsorbParent="false"
+      >
+        <Vue3DraggableResizable :initW="100" :initH="100"
+          ><img src="./assets/logo.png" alt="" style="width:100%;height:100%"
+        /></Vue3DraggableResizable>
+
+        <Vue3DraggableResizable :initW="100" :initH="100" :x="100" :y="200"
+          ><img src="./assets/logo.png" alt="" style="width:100%;height:100%"
+        /></Vue3DraggableResizable>
       </DraggableContainer>
     </div>
   </div>

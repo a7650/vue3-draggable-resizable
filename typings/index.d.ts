@@ -1,4 +1,5 @@
 import { App } from 'vue';
+export { default as DraggableContainer } from './components/DraggableContainer';
 declare const _default: ({
     new (...args: any[]): {
         $: import("vue").ComponentInternalInstance;
@@ -7,12 +8,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -32,12 +33,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -67,12 +68,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -90,7 +91,7 @@ declare const _default: ({
             lockAspectRatio: boolean;
         } & {}>, {
             handlesFiltered: import("vue").ComputedRef<any[]>;
-            resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+            resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
             setWidth(val: number): number;
             setHeight(val: number): number;
             setTop(val: number): number;
@@ -105,6 +106,7 @@ declare const _default: ({
             maxTop: import("vue").ComputedRef<number>;
             parentWidth: import("vue").Ref<number>;
             parentHeight: import("vue").Ref<number>;
+            id: string;
             width: import("vue").Ref<number>;
             height: import("vue").Ref<number>;
             top: import("vue").Ref<number>;
@@ -112,7 +114,7 @@ declare const _default: ({
             enable: import("vue").Ref<boolean>;
             dragging: import("vue").Ref<boolean>;
             resizing: import("vue").Ref<boolean>;
-            resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+            resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
             resizingMaxHeight: import("vue").Ref<number>;
             resizingMaxWidth: import("vue").Ref<number>;
             resizingMinWidth: import("vue").Ref<number>;
@@ -121,7 +123,7 @@ declare const _default: ({
             setEnable: (value: boolean) => boolean;
             setDragging: (value: boolean) => boolean;
             setResizing: (value: boolean) => boolean;
-            setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+            setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
             setResizingMaxHeight: (value: number) => number;
             setResizingMaxWidth: (value: number) => number;
             setResizingMinWidth: (value: number) => number;
@@ -131,6 +133,7 @@ declare const _default: ({
             $setTop: (val: number) => number;
             $setLeft: (val: number) => number;
             containerRef: import("vue").Ref<HTMLElement>;
+            containerProvider: import("./components/types").ContainerProvider;
         }, unknown, {
             style(): {
                 [propName: string]: string;
@@ -142,12 +145,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -171,12 +174,12 @@ declare const _default: ({
         active: boolean;
         x: number;
         y: number;
+        w: number;
+        h: number;
         draggable: boolean;
         resizable: boolean;
         initW: number;
         initH: number;
-        w: number;
-        h: number;
         disabledX: boolean;
         disabledY: boolean;
         disabledW: boolean;
@@ -194,7 +197,7 @@ declare const _default: ({
         lockAspectRatio: boolean;
     } & {}> & import("vue").ShallowUnwrapRef<{
         handlesFiltered: import("vue").ComputedRef<any[]>;
-        resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+        resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
         setWidth(val: number): number;
         setHeight(val: number): number;
         setTop(val: number): number;
@@ -209,6 +212,7 @@ declare const _default: ({
         maxTop: import("vue").ComputedRef<number>;
         parentWidth: import("vue").Ref<number>;
         parentHeight: import("vue").Ref<number>;
+        id: string;
         width: import("vue").Ref<number>;
         height: import("vue").Ref<number>;
         top: import("vue").Ref<number>;
@@ -216,7 +220,7 @@ declare const _default: ({
         enable: import("vue").Ref<boolean>;
         dragging: import("vue").Ref<boolean>;
         resizing: import("vue").Ref<boolean>;
-        resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+        resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
         resizingMaxHeight: import("vue").Ref<number>;
         resizingMaxWidth: import("vue").Ref<number>;
         resizingMinWidth: import("vue").Ref<number>;
@@ -225,7 +229,7 @@ declare const _default: ({
         setEnable: (value: boolean) => boolean;
         setDragging: (value: boolean) => boolean;
         setResizing: (value: boolean) => boolean;
-        setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+        setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
         setResizingMaxHeight: (value: number) => number;
         setResizingMaxWidth: (value: number) => number;
         setResizingMinWidth: (value: number) => number;
@@ -235,6 +239,7 @@ declare const _default: ({
         $setTop: (val: number) => number;
         $setLeft: (val: number) => number;
         containerRef: import("vue").Ref<HTMLElement>;
+        containerProvider: import("./components/types").ContainerProvider;
     }> & {
         style: {
             [propName: string]: string;
@@ -250,12 +255,12 @@ declare const _default: ({
     active: boolean;
     x: number;
     y: number;
+    w: number;
+    h: number;
     draggable: boolean;
     resizable: boolean;
     initW: number;
     initH: number;
-    w: number;
-    h: number;
     disabledX: boolean;
     disabledY: boolean;
     disabledW: boolean;
@@ -273,7 +278,7 @@ declare const _default: ({
     lockAspectRatio: boolean;
 } & {}>, {
     handlesFiltered: import("vue").ComputedRef<any[]>;
-    resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+    resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
     setWidth(val: number): number;
     setHeight(val: number): number;
     setTop(val: number): number;
@@ -288,6 +293,7 @@ declare const _default: ({
     maxTop: import("vue").ComputedRef<number>;
     parentWidth: import("vue").Ref<number>;
     parentHeight: import("vue").Ref<number>;
+    id: string;
     width: import("vue").Ref<number>;
     height: import("vue").Ref<number>;
     top: import("vue").Ref<number>;
@@ -295,7 +301,7 @@ declare const _default: ({
     enable: import("vue").Ref<boolean>;
     dragging: import("vue").Ref<boolean>;
     resizing: import("vue").Ref<boolean>;
-    resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+    resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
     resizingMaxHeight: import("vue").Ref<number>;
     resizingMaxWidth: import("vue").Ref<number>;
     resizingMinWidth: import("vue").Ref<number>;
@@ -304,7 +310,7 @@ declare const _default: ({
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;
-    setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+    setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
     setResizingMaxHeight: (value: number) => number;
     setResizingMaxWidth: (value: number) => number;
     setResizingMinWidth: (value: number) => number;
@@ -314,6 +320,7 @@ declare const _default: ({
     $setTop: (val: number) => number;
     $setLeft: (val: number) => number;
     containerRef: import("vue").Ref<HTMLElement>;
+    containerProvider: import("./components/types").ContainerProvider;
 }, unknown, {
     style(): {
         [propName: string]: string;
@@ -325,12 +332,12 @@ declare const _default: ({
     active: boolean;
     x: number;
     y: number;
+    w: number;
+    h: number;
     draggable: boolean;
     resizable: boolean;
     initW: number;
     initH: number;
-    w: number;
-    h: number;
     disabledX: boolean;
     disabledY: boolean;
     disabledW: boolean;
@@ -356,12 +363,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -381,12 +388,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -416,12 +423,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -439,7 +446,7 @@ declare const _default: ({
             lockAspectRatio: boolean;
         } & {}>, {
             handlesFiltered: import("vue").ComputedRef<any[]>;
-            resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+            resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
             setWidth(val: number): number;
             setHeight(val: number): number;
             setTop(val: number): number;
@@ -454,6 +461,7 @@ declare const _default: ({
             maxTop: import("vue").ComputedRef<number>;
             parentWidth: import("vue").Ref<number>;
             parentHeight: import("vue").Ref<number>;
+            id: string;
             width: import("vue").Ref<number>;
             height: import("vue").Ref<number>;
             top: import("vue").Ref<number>;
@@ -461,7 +469,7 @@ declare const _default: ({
             enable: import("vue").Ref<boolean>;
             dragging: import("vue").Ref<boolean>;
             resizing: import("vue").Ref<boolean>;
-            resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+            resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
             resizingMaxHeight: import("vue").Ref<number>;
             resizingMaxWidth: import("vue").Ref<number>;
             resizingMinWidth: import("vue").Ref<number>;
@@ -470,7 +478,7 @@ declare const _default: ({
             setEnable: (value: boolean) => boolean;
             setDragging: (value: boolean) => boolean;
             setResizing: (value: boolean) => boolean;
-            setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+            setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
             setResizingMaxHeight: (value: number) => number;
             setResizingMaxWidth: (value: number) => number;
             setResizingMinWidth: (value: number) => number;
@@ -480,6 +488,7 @@ declare const _default: ({
             $setTop: (val: number) => number;
             $setLeft: (val: number) => number;
             containerRef: import("vue").Ref<HTMLElement>;
+            containerProvider: import("./components/types").ContainerProvider;
         }, unknown, {
             style(): {
                 [propName: string]: string;
@@ -491,12 +500,12 @@ declare const _default: ({
             active: boolean;
             x: number;
             y: number;
+            w: number;
+            h: number;
             draggable: boolean;
             resizable: boolean;
             initW: number;
             initH: number;
-            w: number;
-            h: number;
             disabledX: boolean;
             disabledY: boolean;
             disabledW: boolean;
@@ -520,12 +529,12 @@ declare const _default: ({
         active: boolean;
         x: number;
         y: number;
+        w: number;
+        h: number;
         draggable: boolean;
         resizable: boolean;
         initW: number;
         initH: number;
-        w: number;
-        h: number;
         disabledX: boolean;
         disabledY: boolean;
         disabledW: boolean;
@@ -543,7 +552,7 @@ declare const _default: ({
         lockAspectRatio: boolean;
     } & {}> & import("vue").ShallowUnwrapRef<{
         handlesFiltered: import("vue").ComputedRef<any[]>;
-        resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+        resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
         setWidth(val: number): number;
         setHeight(val: number): number;
         setTop(val: number): number;
@@ -558,6 +567,7 @@ declare const _default: ({
         maxTop: import("vue").ComputedRef<number>;
         parentWidth: import("vue").Ref<number>;
         parentHeight: import("vue").Ref<number>;
+        id: string;
         width: import("vue").Ref<number>;
         height: import("vue").Ref<number>;
         top: import("vue").Ref<number>;
@@ -565,7 +575,7 @@ declare const _default: ({
         enable: import("vue").Ref<boolean>;
         dragging: import("vue").Ref<boolean>;
         resizing: import("vue").Ref<boolean>;
-        resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+        resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
         resizingMaxHeight: import("vue").Ref<number>;
         resizingMaxWidth: import("vue").Ref<number>;
         resizingMinWidth: import("vue").Ref<number>;
@@ -574,7 +584,7 @@ declare const _default: ({
         setEnable: (value: boolean) => boolean;
         setDragging: (value: boolean) => boolean;
         setResizing: (value: boolean) => boolean;
-        setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+        setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
         setResizingMaxHeight: (value: number) => number;
         setResizingMaxWidth: (value: number) => number;
         setResizingMinWidth: (value: number) => number;
@@ -584,6 +594,7 @@ declare const _default: ({
         $setTop: (val: number) => number;
         $setLeft: (val: number) => number;
         containerRef: import("vue").Ref<HTMLElement>;
+        containerProvider: import("./components/types").ContainerProvider;
     }> & {
         style: {
             [propName: string]: string;
@@ -599,12 +610,12 @@ declare const _default: ({
     active: boolean;
     x: number;
     y: number;
+    w: number;
+    h: number;
     draggable: boolean;
     resizable: boolean;
     initW: number;
     initH: number;
-    w: number;
-    h: number;
     disabledX: boolean;
     disabledY: boolean;
     disabledW: boolean;
@@ -622,7 +633,7 @@ declare const _default: ({
     lockAspectRatio: boolean;
 } & {}>, {
     handlesFiltered: import("vue").ComputedRef<any[]>;
-    resizeHandleDown: (e: MouseEvent, handleType: import("./components/vue3-draggable-resizable").ResizingHandle) => void;
+    resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
     setWidth(val: number): number;
     setHeight(val: number): number;
     setTop(val: number): number;
@@ -637,6 +648,7 @@ declare const _default: ({
     maxTop: import("vue").ComputedRef<number>;
     parentWidth: import("vue").Ref<number>;
     parentHeight: import("vue").Ref<number>;
+    id: string;
     width: import("vue").Ref<number>;
     height: import("vue").Ref<number>;
     top: import("vue").Ref<number>;
@@ -644,7 +656,7 @@ declare const _default: ({
     enable: import("vue").Ref<boolean>;
     dragging: import("vue").Ref<boolean>;
     resizing: import("vue").Ref<boolean>;
-    resizingHandle: import("vue").Ref<import("./components/vue3-draggable-resizable").ResizingHandle>;
+    resizingHandle: import("vue").Ref<import("./components/types").ResizingHandle>;
     resizingMaxHeight: import("vue").Ref<number>;
     resizingMaxWidth: import("vue").Ref<number>;
     resizingMinWidth: import("vue").Ref<number>;
@@ -653,7 +665,7 @@ declare const _default: ({
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;
-    setResizingHandle: (value: import("./components/vue3-draggable-resizable").ResizingHandle) => import("./components/vue3-draggable-resizable").ResizingHandle;
+    setResizingHandle: (value: import("./components/types").ResizingHandle) => import("./components/types").ResizingHandle;
     setResizingMaxHeight: (value: number) => number;
     setResizingMaxWidth: (value: number) => number;
     setResizingMinWidth: (value: number) => number;
@@ -663,6 +675,7 @@ declare const _default: ({
     $setTop: (val: number) => number;
     $setLeft: (val: number) => number;
     containerRef: import("vue").Ref<HTMLElement>;
+    containerProvider: import("./components/types").ContainerProvider;
 }, unknown, {
     style(): {
         [propName: string]: string;
@@ -674,12 +687,12 @@ declare const _default: ({
     active: boolean;
     x: number;
     y: number;
+    w: number;
+    h: number;
     draggable: boolean;
     resizable: boolean;
     initW: number;
     initH: number;
-    w: number;
-    h: number;
     disabledX: boolean;
     disabledY: boolean;
     disabledW: boolean;

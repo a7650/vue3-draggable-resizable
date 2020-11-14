@@ -1,7 +1,8 @@
 import { Ref } from 'vue';
-import { ResizingHandle } from './vue3-draggable-resizable';
+import { ContainerProvider, ResizingHandle } from './types';
 export declare function useState<T>(initialState: T): [Ref<T>, (value: T) => T];
 export declare function initState(props: any, emit: any): {
+    id: string;
     width: Ref<number>;
     height: Ref<number>;
     top: Ref<number>;
@@ -46,7 +47,7 @@ export declare function initLimitSizeAndMethods(props: any, parentSize: ReturnTy
     maxLeft: import("vue").ComputedRef<number>;
     maxTop: import("vue").ComputedRef<number>;
 };
-export declare function initDraggableContainer(containerRef: Ref<HTMLElement | undefined>, containerProps: ReturnType<typeof initState>, limitProps: ReturnType<typeof initLimitSizeAndMethods>, draggable: Ref<boolean>, emit: any): {
+export declare function initDraggableContainer(containerRef: Ref<HTMLElement | undefined>, containerProps: ReturnType<typeof initState>, limitProps: ReturnType<typeof initLimitSizeAndMethods>, draggable: Ref<boolean>, emit: any, containerProvider: ContainerProvider | null, parentSize: ReturnType<typeof initParent>): {
     containerRef: Ref<HTMLElement>;
 };
 export declare function initResizeHandle(containerProps: ReturnType<typeof initState>, limitProps: ReturnType<typeof initLimitSizeAndMethods>, parentSize: ReturnType<typeof initParent>, props: any, emit: any): {

@@ -37,13 +37,13 @@
 }
 .vdr-handle-ml {
   top: 50%;
-  margin-top: -4px;
+  margin-top: -3px;
   left: -4px;
   cursor: w-resize;
 }
 .vdr-handle-mr {
   top: 50%;
-  margin-top: -4px;
+  margin-top: -3px;
   right: -4px;
   cursor: e-resize;
 }

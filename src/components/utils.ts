@@ -39,14 +39,14 @@ export function getReferenceLineMap(
   const { parentWidth, parentHeight } = parentSize
   referenceLine.row.push(...containerProvider.adsorbRows)
   referenceLine.col.push(...containerProvider.adsorbCols)
-  if (containerProvider.adsorbParent) {
+  if (containerProvider.adsorbParent.value) {
     referenceLine.row.push(0, parentHeight.value, parentHeight.value / 2)
     referenceLine.col.push(0, parentWidth.value, parentWidth.value / 2)
   }
   const widgetPositionStore = containerProvider.getPositionStore(id)
   Object.values(widgetPositionStore).forEach(({ x, y, w, h }) => {
-    referenceLine.row.push(y, y + h, (y + h) / 2)
-    referenceLine.col.push(x, x + w, (x + w) / 2)
+    referenceLine.row.push(y, y + h, y + h / 2)
+    referenceLine.col.push(x, x + w, x + w / 2)
   })
   const referenceLineMap: ReferenceLineMap = {
     row: referenceLine.row.reduce((pre, cur) => {
