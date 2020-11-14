@@ -8,7 +8,15 @@
 
 </div>
 
-> [ Vue3 Component ] Vue3的拖拽缩放容器
+> [Vue3 组件] 用于拖拽调整位置和大小的的组件，同时支持冲突检测，元素吸附对齐，实时参考线。
+
+## 文档目录
+
+- [特性](#特性)
+- [使用方法](#使用)
+  - [组件 Props](#props)
+  - [组件 Events](#events)
+  - [使用吸附对齐功能](#使用吸附对齐功能)
 
 ### 特性
 
@@ -17,6 +25,10 @@
 - 限制组件的拖动和缩放在其父节点内
 - 自定义组件内各种类名
 - 缩放句柄的类名也可自定义
+- 元素吸附对齐
+- 实时参考线
+- 自定义参考线
+- 使用 Vue3 和 ts
 
 ### 使用
 
@@ -24,7 +36,7 @@
 $ npm install vue3-draggable-resizable
 ```
 
-使用use方法注册组件
+使用 use 方法注册组件
 
 ```js
 // >main.js
@@ -55,7 +67,7 @@ export default defineComponent({
 })
 ```
 
-下面是一个使用vue-template语法写的例子
+下面是一个使用 vue-template 语法写的例子
 
 ```vue
 <template>
@@ -401,7 +413,9 @@ default: `handle`
 ```html
 <Vue3DraggableResizable classNameHandle="my-handle" />
 ```
-以上设置将会渲染出下面的缩放句柄节点（my-handle-*）
+
+以上设置将会渲染出下面的缩放句柄节点（my-handle-\*）
+
 ```html
 ...
 <div class="vdr-handle vdr-handle-tl my-handle my-handle-tl"></div>
@@ -491,4 +505,166 @@ payload: `{ x: number, y: number, w: number, h: number }`
 
 ```html
 <Vue3DraggableResizable @resize-end="resizeEndHandle" />
+```
+
+### 使用吸附对齐功能
+
+吸附对齐功能可以在拖动过程中和其他元素自动吸附，你也可以自定义吸附对齐的校准线
+
+你需要引入另外一个组件来使用该特性
+
+像下面这样，将 Vue3DraggableResizable 放在 DraggableContainer 内：
+
+```vue
+<template>
+  <div id="app">
+    <div class="parent">
+      <DraggableContainer>
+        <Vue3DraggableResizable>
+          Test
+        </Vue3DraggableResizable>
+        <Vue3DraggableResizable>
+          Another test
+        </Vue3DraggableResizable>
+      </DraggableContainer>
+    </div>
+  </div>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
+// 这个组件不是默认导出的，
+// 如果你之前是通过“app.use(Vue3DraggableResizable)”注册的，
+// 那么你这里就不需要再引入了，因为DraggableContainer这个已经被全局注册了，你可以直接使用
+import { DraggableContainer } from 'vue3-draggable-resizable'
+//default styles
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
+export default defineComponent({
+  components: { Vue3DraggableResizable, DraggableContainer }
+})
+</script>
+<style>
+.parent {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  border: 1px solid #000;
+  user-select: none;
+}
+</style>
+```
+
+### DraggableContainer Props
+
+这些 props 适用于 DraggableContainer 组件
+
+#### disabled
+
+type: `Boolean`<br>
+default: `false`<br>
+
+关闭吸附对齐功能
+
+```html
+<DraggableContainer :disabled="true">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbParent
+
+type: `Boolean`<br>
+default: `true`<br>
+
+是否和父组件对齐，如果开启，则元素拖拽到父容器边缘（父容器的上中下左中右边）时会发生吸附，否则不会
+
+```html
+<DraggableContainer :adsorbParent="false">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbCols
+
+type: `Array<Number>`<br>
+default: `null`<br>
+
+自定义列的校准线，元素在x轴上拖动到这些线附近时，会产生吸附
+
+```html
+<DraggableContainer :adsorbCols="[10,20,30]">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbRows
+
+type: `Array<Number>`<br>
+default: `null`<br>
+
+自定义行的校准线，元素在y轴上拖动到这些线附近时，会产生吸附
+
+```html
+<DraggableContainer :adsorbRows="[10,20,30]">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### referenceLineVisible
+
+type: `Boolean`<br>
+default: `true`<br>
+
+是否显示实时参考线，元素在产生自动吸附后，会有一条参考线线出现，如果不需要，可通过该选项关闭。
+
+```html
+<DraggableContainer :referenceLineVisible="false">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### referenceLineColor
+
+type: `String`<br>
+default: `#f00`<br>
+
+实时参考线的颜色，默认红色
+
+```html
+<DraggableContainer :referenceLineColor="#0f0">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
 ```

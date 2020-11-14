@@ -8,9 +8,18 @@
 
 </div>
 
-> [ Vue3 Component ] Draggable and resizable component for vue3
+> [Vue3 组件] 用于拖拽调整位置和大小的的组件，同时支持冲突检测，元素吸附对齐，实时参考线。
+> [ Vue3 Component ] Draggable and resizable component for vue3, and, support element adsorption alignment, real-time reference line, etc.
 
 [点击查看中文文档](https://github.com/a7650/vue3-draggable-resizable/blob/main/docs/document_zh.md)
+
+## Table of Contents
+
+- [Features](#features)
+- [Usage](#Usage)
+  - [Props](#props)
+  - [Events](#events)
+  - [Use adsorption alignment](#Use-adsorption-alignment)
 
 ### Features
 
@@ -19,6 +28,8 @@
 - Restrict movement and size in parent node
 - Customize various class names
 - Provide your own markup for handles
+- Adsorption alignment
+- Reference line
 
 ### Usage
 
@@ -257,7 +268,7 @@ Defines the component can be resizable or not
 type: `Boolean`<br>
 default: `false`<br>
 
-The `lockAspectRatio` property is used to lock aspect ratio. 
+The `lockAspectRatio` property is used to lock aspect ratio.
 
 ```html
 <Vue3DraggableResizable :lockAspectRatio="true" />
@@ -280,7 +291,6 @@ type: `Boolean`<br>
 default: `false`<br>
 
 Defines the component can be moved on y-axis or not
-
 
 ```html
 <Vue3DraggableResizable :disabledY="true" />
@@ -480,4 +490,163 @@ payload: `{ x: number, y: number, w: number, h: number }`
 
 ```html
 <Vue3DraggableResizable @resize-end="resizeEndHandle" />
+```
+
+### Use-adsorption-alignment
+
+You need to import another component to use the "adsorption alignment" feature.
+
+This can be used as follows.
+
+```vue
+<template>
+  <div id="app">
+    <div class="parent">
+      <DraggableContainer>
+        <Vue3DraggableResizable>
+          Test
+        </Vue3DraggableResizable>
+        <Vue3DraggableResizable>
+          Another test
+        </Vue3DraggableResizable>
+      </DraggableContainer>
+    </div>
+  </div>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
+// This component is not exported by default
+// If you used "app.use(Vue3DraggableResizable)"，then you don't need to import it, you can use it directly.
+import { DraggableContainer } from 'vue3-draggable-resizable'
+//default styles
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
+export default defineComponent({
+  components: { Vue3DraggableResizable, DraggableContainer }
+})
+</script>
+<style>
+.parent {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  border: 1px solid #000;
+  user-select: none;
+}
+</style>
+```
+
+### DraggableContainer Props
+
+These props apply to DraggableContainer
+
+#### disabled
+
+type: `Boolean`<br>
+default: `false`<br>
+
+Disable this feature
+
+```html
+<DraggableContainer :disabled="true">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbParent
+
+type: `Boolean`<br>
+default: `true`<br>
+
+Adsorption near parent component
+
+```html
+<DraggableContainer :adsorbParent="false">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbCols
+
+type: `Array<Number>`<br>
+default: `null`<br>
+
+Custom guides(column)
+
+```html
+<DraggableContainer :adsorbCols="[10,20,30]">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### adsorbRows
+
+type: `Array<Number>`<br>
+default: `null`<br>
+
+Custom guides(row)
+
+```html
+<DraggableContainer :adsorbRows="[10,20,30]">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### referenceLineVisible
+
+type: `Boolean`<br>
+default: `true`<br>
+
+reference line visible
+
+```html
+<DraggableContainer :referenceLineVisible="false">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
+```
+
+#### referenceLineColor
+
+type: `String`<br>
+default: `#f00`<br>
+
+reference line color
+
+```html
+<DraggableContainer :referenceLineColor="#0f0">
+  <Vue3DraggableResizable>
+    Test
+  </Vue3DraggableResizable>
+  <Vue3DraggableResizable>
+    Another test
+  </Vue3DraggableResizable>
+</DraggableContainer>
 ```
