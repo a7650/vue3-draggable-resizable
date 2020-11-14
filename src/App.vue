@@ -18,7 +18,7 @@
     </div>
     <div>active:{{ active }}<br /></div>
     <div class="parent">
-      <Vue3DraggableResizable
+      <!-- <Vue3DraggableResizable
         :initW="40"
         :initH="80"
         v-model:x="x"
@@ -45,17 +45,26 @@
         @resize-end="print('resize-end', $event)"
       >
         This is a test example
-      </Vue3DraggableResizable>
+      </Vue3DraggableResizable> -->
+      <DraggableContainer :referenceLineVisible="true" referenceLineColor="#0ff">
+        <Vue3DraggableResizable :initW="40" :initH="50"
+          >Rect1</Vue3DraggableResizable
+        >
+        <Vue3DraggableResizable :initW="40" :initH="50" :x="100" :y="200"
+          >Rect2</Vue3DraggableResizable
+        >
+      </DraggableContainer>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import Vue3DraggableResizable from './components/vue3-draggable-resizable'
+import Vue3DraggableResizable from './components/Vue3DraggableResizable'
+import DraggableContainer from './components/DraggableContainer'
 
 export default defineComponent({
-  components: { Vue3DraggableResizable },
+  components: { DraggableContainer, Vue3DraggableResizable },
   data() {
     return {
       x: 100,
@@ -84,5 +93,10 @@ export default defineComponent({
   left: 200px;
   border: 1px solid #000;
   user-select: none;
+  ::v-deep {
+    .vdr-container {
+      border-color: #999;
+    }
+  }
 }
 </style>

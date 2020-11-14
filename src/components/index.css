@@ -1,6 +1,7 @@
 .vdr-container {
   position: absolute;
   border: 1px solid transparent;
+  box-sizing: border-box;
 }
 .vdr-container.active {
   border-color: #000;

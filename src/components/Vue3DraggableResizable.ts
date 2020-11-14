@@ -1,4 +1,4 @@
-import { defineComponent, ref, toRef, h, Ref } from 'vue'
+import { defineComponent, ref, toRef, h, Ref, inject } from 'vue'
 import {
   initDraggableContainer,
   watchProps,
@@ -8,18 +8,15 @@ import {
   initResizeHandle
 } from './hooks'
 import './index.css'
-import { getElSize, filterHandles } from './utils'
+import { getElSize, filterHandles, IDENTITY } from './utils'
+import {
+  UpdatePosition,
+  GetPositionStore,
+  ResizingHandle,
+  ContainerProvider,
+  SetMatchedLine
+} from './types'
 
-export type ResizingHandle =
-  | 'tl'
-  | 'tm'
-  | 'tr'
-  | 'ml'
-  | 'mr'
-  | 'bl'
-  | 'bm'
-  | 'br'
-  | ''
 export const ALL_HANDLES: ResizingHandle[] = [
   'tl',
   'tm',
@@ -155,6 +152,19 @@ const VueDraggableResizable = defineComponent({
   emits: emits,
   setup(props, { emit }) {
     const containerProps = initState(props, emit)
+    const provideIdentity = inject('identity')
+    let containerProvider: ContainerProvider | null = null
+    if (provideIdentity === IDENTITY) {
+      containerProvider = {
+        updatePosition: inject<UpdatePosition>('updatePosition')!,
+        getPositionStore: inject<GetPositionStore>('getPositionStore')!,
+        disabled: inject<Ref<boolean>>('disabled')!,
+        adsorbParent: inject<Ref<boolean>>('adsorbParent')!,
+        adsorbCols: inject<number[]>('adsorbCols')!,
+        adsorbRows: inject<number[]>('adsorbRows')!,
+        setMatchedLine: inject<SetMatchedLine>('setMatchedLine')!
+      }
+    }
     const containerRef = ref<HTMLElement>()
     const parentSize = initParent(containerRef)
     const limitProps = initLimitSizeAndMethods(
@@ -167,7 +177,9 @@ const VueDraggableResizable = defineComponent({
       containerProps,
       limitProps,
       toRef(props, 'draggable'),
-      emit
+      emit,
+      containerProvider,
+      parentSize
     )
     const resizeHandle = initResizeHandle(
       containerProps,
@@ -179,6 +191,7 @@ const VueDraggableResizable = defineComponent({
     watchProps(props, limitProps)
     return {
       containerRef,
+      containerProvider,
       ...containerProps,
       ...parentSize,
       ...limitProps,
@@ -210,6 +223,14 @@ const VueDraggableResizable = defineComponent({
     const { width, height } = getElSize(this.containerRef)
     this.setWidth(this.initW === null ? this.w || width : this.initW)
     this.setHeight(this.initH === null ? this.h || height : this.initH)
+    if (this.containerProvider) {
+      this.containerProvider.updatePosition(this.id, {
+        x: this.left,
+        y: this.top,
+        w: this.width,
+        h: this.height
+      })
+    }
   },
   render() {
     return h(
@@ -220,8 +241,7 @@ const VueDraggableResizable = defineComponent({
         style: this.style
       },
       [
-        this.aspectRatio,
-        this.$slots.default!(),
+        this.$slots.default && this.$slots.default(),
         ...this.handlesFiltered.map((item) =>
           h('div', {
             class: [

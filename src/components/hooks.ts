@@ -1,6 +1,11 @@
 import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
-import { getElSize, filterHandles } from './utils'
-import { ResizingHandle } from './vue3-draggable-resizable'
+import { getElSize, filterHandles, getId, getReferenceLineMap } from './utils'
+import {
+  ContainerProvider,
+  MatchedLine,
+  ReferenceLineMap,
+  ResizingHandle
+} from './types'
 
 export function useState<T>(initialState: T): [Ref<T>, (value: T) => T] {
   const state = ref(initialState) as Ref<T>
@@ -60,6 +65,7 @@ export function initState(props: any, emit: any) {
     }
   )
   return {
+    id: getId(),
     width,
     height,
     top,
@@ -212,9 +218,11 @@ export function initDraggableContainer(
   containerProps: ReturnType<typeof initState>,
   limitProps: ReturnType<typeof initLimitSizeAndMethods>,
   draggable: Ref<boolean>,
-  emit: any
+  emit: any,
+  containerProvider: ContainerProvider | null,
+  parentSize: ReturnType<typeof initParent>
 ) {
-  const { left: x, top: y, dragging } = containerProps
+  const { left: x, top: y, width: w, height: h, dragging, id } = containerProps
   const {
     setDragging,
     setEnable,
@@ -226,6 +234,7 @@ export function initDraggableContainer(
   let lstY = 0
   let lstPageX = 0
   let lstPageY = 0
+  let referenceLineMap: ReferenceLineMap | null = null
   const _unselect = (e: MouseEvent) => {
     const target = e.target
     if (!containerRef.value?.contains(<Node>target)) {
@@ -239,13 +248,74 @@ export function initDraggableContainer(
     setDragging(false)
     document.documentElement.removeEventListener('mouseup', handleUp)
     document.documentElement.removeEventListener('mousemove', handleDrag)
+    referenceLineMap = null
+    if (containerProvider) {
+      containerProvider.updatePosition(id, {
+        x: x.value,
+        y: y.value,
+        w: w.value,
+        h: h.value
+      })
+      containerProvider.setMatchedLine(null)
+    }
   }
   const handleDrag = (e: MouseEvent) => {
     if (!(dragging.value && containerRef.value)) return
     const { pageX, pageY } = e
     const deltaX = pageX - lstPageX
     const deltaY = pageY - lstPageY
-    emit('dragging', { x: setLeft(lstX + deltaX), y: setTop(lstY + deltaY) })
+    let newLeft = lstX + deltaX
+    let newTop = lstY + deltaY
+    if (referenceLineMap !== null) {
+      const widgetSelfLine = {
+        col: [newLeft, newLeft + w.value / 2, newLeft + w.value],
+        row: [newTop, newTop + h.value / 2, newTop + h.value]
+      }
+      const matchedLine: unknown = {
+        row: widgetSelfLine.row
+          .map((i, index) => {
+            let match = null
+            Object.values(referenceLineMap!.row).forEach((referItem) => {
+              if (i >= referItem.min && i <= referItem.max) {
+                match = referItem.value
+              }
+            })
+            if (match !== null) {
+              if (index === 0) {
+                newTop = match
+              } else if (index === 1) {
+                newTop = Math.floor(match - h.value / 2)
+              } else if (index === 2) {
+                newTop = Math.floor(match - h.value)
+              }
+            }
+            return match
+          })
+          .filter((i) => i !== null),
+        col: widgetSelfLine.col
+          .map((i, index) => {
+            let match = null
+            Object.values(referenceLineMap!.col).forEach((referItem) => {
+              if (i >= referItem.min && i <= referItem.max) {
+                match = referItem.value
+              }
+            })
+            if (match !== null) {
+              if (index === 0) {
+                newLeft = match
+              } else if (index === 1) {
+                newLeft = Math.floor(match - w.value / 2)
+              } else if (index === 2) {
+                newLeft = Math.floor(match - w.value)
+              }
+            }
+            return match
+          })
+          .filter((i) => i !== null)
+      }
+      containerProvider!.setMatchedLine(matchedLine as MatchedLine)
+    }
+    emit('dragging', { x: setLeft(newLeft), y: setTop(newTop) })
   }
   const handleDown = (e: MouseEvent) => {
     if (!draggable.value) return
@@ -256,6 +326,11 @@ export function initDraggableContainer(
     lstPageY = e.pageY
     document.documentElement.addEventListener('mousemove', handleDrag)
     document.documentElement.addEventListener('mouseup', handleUp)
+    console.log(containerProvider)
+    if (containerProvider && !containerProvider.disabled.value) {
+      referenceLineMap = getReferenceLineMap(containerProvider, parentSize, id)
+      console.log(referenceLineMap)
+    }
   }
   watch(dragging, (cur, pre) => {
     if (!pre && cur) {

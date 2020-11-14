@@ -2,7 +2,7 @@
   "name": "vue3-draggable-resizable",
   "version": "1.4.0",
   "private": false,
-  "description": "[Vue3 Component] Draggable and resizable component for vue3",
+  "description": "[Vue3 Component] 拖拽缩放并具有自动吸附对齐、参考线等功能",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "npm run build:lib && npm run build:dts",
@@ -46,7 +46,8 @@
     "component",
     "draggable",
     "resizable",
-    "拖拽"
+    "拖拽",
+    "吸附对齐"
   ],
   "main": "dist/Vue3DraggableResizable.umd.min.js",
   "module": "dist/Vue3DraggableResizable.umd.min.js",
