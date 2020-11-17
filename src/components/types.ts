@@ -45,11 +45,9 @@ export type ResizingHandle =
 
 export type ParentSize = ReturnType<typeof initParent>
 
-export interface ReferenceLineMap {
-  row: {
-    [propName: number]: { min: number; max: number; value: number }
+export type ReferenceLineMap = Record<
+  'col' | 'row',
+  {
+    [propName: number]: Record<'min' | 'max' | 'value', number>
   }
-  col: {
-    [propName: number]: { min: number; max: number; value: number }
-  }
-}
+>

@@ -16,6 +16,27 @@ export function getElSize(el: Element) {
   }
 }
 
+export function addEvent<K extends keyof HTMLElementEventMap>(
+  el: HTMLElement,
+  event: K,
+  handler: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any
+) {
+  if (!el) {
+    return
+  }
+  el.addEventListener(event, handler)
+}
+export function removeEvent<K extends keyof HTMLElementEventMap>(
+  el: HTMLElement,
+  event: K,
+  handler: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any
+) {
+  if (!el) {
+    return
+  }
+  el.removeEventListener(event, handler)
+}
+
 export function filterHandles(handles: ResizingHandle[]) {
   return [...new Set([...handles].filter((i) => ALL_HANDLES.includes(i)))]
 }
