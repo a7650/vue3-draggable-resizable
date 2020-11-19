@@ -27,19 +27,6 @@ export interface MatchedLine {
 export declare type SetMatchedLine = (matchedLine: MatchedLine | null) => void;
 export declare type ResizingHandle = 'tl' | 'tm' | 'tr' | 'ml' | 'mr' | 'bl' | 'bm' | 'br' | '';
 export declare type ParentSize = ReturnType<typeof initParent>;
-export interface ReferenceLineMap {
-    row: {
-        [propName: number]: {
-            min: number;
-            max: number;
-            value: number;
-        };
-    };
-    col: {
-        [propName: number]: {
-            min: number;
-            max: number;
-            value: number;
-        };
-    };
-}
+export declare type ReferenceLineMap = Record<'col' | 'row', {
+    [propName: number]: Record<'min' | 'max' | 'value', number>;
+}>;
