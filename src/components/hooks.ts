@@ -326,10 +326,8 @@ export function initDraggableContainer(
     lstPageY = e.pageY
     document.documentElement.addEventListener('mousemove', handleDrag)
     document.documentElement.addEventListener('mouseup', handleUp)
-    console.log(containerProvider)
     if (containerProvider && !containerProvider.disabled.value) {
       referenceLineMap = getReferenceLineMap(containerProvider, parentSize, id)
-      console.log(referenceLineMap)
     }
   }
   watch(dragging, (cur, pre) => {

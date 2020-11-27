@@ -1,24 +1,12 @@
 <template>
   <div id="app">
-    <div>
-      x:{{ x }} <button @click="x += 10">+</button
-      ><button @click="x -= 10">-</button>
-    </div>
-    <div>
-      y:{{ y }}<button @click="y += 10">+</button
-      ><button @click="y -= 10">-</button>
-    </div>
-    <div>
-      w:{{ w }}<button @click="w += 10">+</button
-      ><button @click="w -= 10">-</button>
-    </div>
-    <div>
-      h: {{ h }}<button @click="h += 10">+</button
-      ><button @click="h -= 10">-</button>
-    </div>
+    <div>x:{{ x }} <button @click="x += 10">+</button><button @click="x -= 10">-</button></div>
+    <div>y:{{ y }}<button @click="y += 10">+</button><button @click="y -= 10">-</button></div>
+    <div>w:{{ w }}<button @click="w += 10">+</button><button @click="w -= 10">-</button></div>
+    <div>h: {{ h }}<button @click="h += 10">+</button><button @click="h -= 10">-</button></div>
     <div>active:{{ active }}<br /></div>
     <div class="parent">
-      <!-- <Vue3DraggableResizable
+      <Vue3DraggableResizable
         :initW="40"
         :initH="80"
         v-model:x="x"
@@ -45,28 +33,15 @@
         @resize-end="print('resize-end', $event)"
       >
         This is a test example
-      </Vue3DraggableResizable> -->
-      <DraggableContainer
-        :referenceLineVisible="true"
-        referenceLineColor="#f00"
-        :adsorbParent="false"
-      >
-        <Vue3DraggableResizable :initW="100" :initH="100"
-          ><img src="./assets/logo.png" alt="" style="width:100%;height:100%"
-        /></Vue3DraggableResizable>
-
-        <Vue3DraggableResizable :initW="100" :initH="100" :x="100" :y="200"
-          ><img src="./assets/logo.png" alt="" style="width:100%;height:100%"
-        /></Vue3DraggableResizable>
-      </DraggableContainer>
+      </Vue3DraggableResizable>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import Vue3DraggableResizable from './components/Vue3DraggableResizable'
-import DraggableContainer from './components/DraggableContainer'
+import { defineComponent } from "vue";
+import Vue3DraggableResizable from "./components/Vue3DraggableResizable";
+import DraggableContainer from "./components/DraggableContainer";
 
 export default defineComponent({
   components: { DraggableContainer, Vue3DraggableResizable },
@@ -78,16 +53,16 @@ export default defineComponent({
       w: 100,
       active: false,
       draggable: true,
-      resizable: true
-    }
+      resizable: true,
+    };
   },
   mounted() {},
   methods: {
     print(val, e) {
       // console.log(val, e)
-    }
-  }
-})
+    },
+  },
+});
 </script>
 <style lang="less" scoped>
 .parent {
