@@ -10,13 +10,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 exports.__esModule = true;
 exports.getReferenceLineMap = exports.getId = exports.filterHandles = exports.removeEvent = exports.addEvent = exports.getElSize = exports.IDENTITY = void 0;
 var Vue3DraggableResizable_1 = require("./Vue3DraggableResizable");
@@ -45,7 +38,13 @@ function removeEvent(el, event, handler) {
 exports.removeEvent = removeEvent;
 function filterHandles(handles) {
     if (handles && handles.length > 0) {
-        return __spreadArrays(new Set(__spreadArrays(handles).filter(function (i) { return Vue3DraggableResizable_1.ALL_HANDLES.includes(i); })));
+        var result_1 = [];
+        handles.forEach(function (item) {
+            if (Vue3DraggableResizable_1.ALL_HANDLES.includes(item) && !result_1.includes(item)) {
+                result_1.push(item);
+            }
+        });
+        return result_1;
     }
     else {
         return [];

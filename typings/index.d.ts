@@ -90,7 +90,7 @@ declare const _default: ({
             classNameHandle: string;
             lockAspectRatio: boolean;
         } & {}>, {
-            handlesFiltered: import("vue").ComputedRef<any[]>;
+            handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
             resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
             setWidth(val: number): number;
             setHeight(val: number): number;
@@ -196,7 +196,7 @@ declare const _default: ({
         classNameHandle: string;
         lockAspectRatio: boolean;
     } & {}> & import("vue").ShallowUnwrapRef<{
-        handlesFiltered: import("vue").ComputedRef<any[]>;
+        handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
         resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
         setWidth(val: number): number;
         setHeight(val: number): number;
@@ -277,7 +277,7 @@ declare const _default: ({
     classNameHandle: string;
     lockAspectRatio: boolean;
 } & {}>, {
-    handlesFiltered: import("vue").ComputedRef<any[]>;
+    handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
     resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
     setWidth(val: number): number;
     setHeight(val: number): number;
@@ -445,7 +445,7 @@ declare const _default: ({
             classNameHandle: string;
             lockAspectRatio: boolean;
         } & {}>, {
-            handlesFiltered: import("vue").ComputedRef<any[]>;
+            handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
             resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
             setWidth(val: number): number;
             setHeight(val: number): number;
@@ -551,7 +551,7 @@ declare const _default: ({
         classNameHandle: string;
         lockAspectRatio: boolean;
     } & {}> & import("vue").ShallowUnwrapRef<{
-        handlesFiltered: import("vue").ComputedRef<any[]>;
+        handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
         resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
         setWidth(val: number): number;
         setHeight(val: number): number;
@@ -632,7 +632,7 @@ declare const _default: ({
     classNameHandle: string;
     lockAspectRatio: boolean;
 } & {}>, {
-    handlesFiltered: import("vue").ComputedRef<any[]>;
+    handlesFiltered: import("vue").ComputedRef<import("./components/types").ResizingHandle[]>;
     resizeHandleDown: (e: MouseEvent, handleType: import("./components/types").ResizingHandle) => void;
     setWidth(val: number): number;
     setHeight(val: number): number;

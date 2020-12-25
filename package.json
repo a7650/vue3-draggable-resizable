@@ -1,6 +1,6 @@
 {
   "name": "vue3-draggable-resizable",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "private": false,
   "description": "[Vue3 Component] 拖拽缩放并具有自动吸附对齐、参考线等功能",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "npm run build:lib && npm run build:dts",
     "lint": "vue-cli-service lint",
     "build:lib": "vue-cli-service build --target lib --name Vue3DraggableResizable src/index.ts",
-    "build:dts":"tsc src/index.ts --declaration --declarationDir typings"
+    "build:dts": "tsc src/index.ts --declaration --declarationDir typings"
   },
   "dependencies": {},
   "devDependencies": {

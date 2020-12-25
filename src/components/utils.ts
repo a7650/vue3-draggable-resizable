@@ -39,7 +39,13 @@ export function removeEvent<K extends keyof HTMLElementEventMap>(
 
 export function filterHandles(handles: ResizingHandle[]) {
   if (handles && handles.length > 0) {
-    return [...new Set([...handles].filter((i) => ALL_HANDLES.includes(i)))]
+    const result: ResizingHandle[] = []
+    handles.forEach((item) => {
+      if (ALL_HANDLES.includes(item) && !result.includes(item)) {
+        result.push(item)
+      }
+    })
+    return result
   } else {
     return []
   }

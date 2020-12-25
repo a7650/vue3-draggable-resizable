@@ -51,7 +51,7 @@ export declare function initDraggableContainer(containerRef: Ref<HTMLElement | u
     containerRef: Ref<HTMLElement>;
 };
 export declare function initResizeHandle(containerProps: ReturnType<typeof initState>, limitProps: ReturnType<typeof initLimitSizeAndMethods>, parentSize: ReturnType<typeof initParent>, props: any, emit: any): {
-    handlesFiltered: import("vue").ComputedRef<any[]>;
+    handlesFiltered: import("vue").ComputedRef<ResizingHandle[]>;
     resizeHandleDown: (e: MouseEvent, handleType: ResizingHandle) => void;
 };
 export declare function watchProps(props: any, limits: ReturnType<typeof initLimitSizeAndMethods>): void;
