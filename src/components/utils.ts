@@ -16,26 +16,27 @@ export function getElSize(el: Element) {
   }
 }
 
-export function addEvent<K extends keyof HTMLElementEventMap>(
-  el: HTMLElement,
-  event: K,
-  handler: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any
+function createEventListenerFunction(
+  type: 'addEventListener' | 'removeEventListener'
 ) {
-  if (!el) {
-    return
+  return <K extends keyof HTMLElementEventMap>(
+    el: HTMLElement,
+    events: K | K[],
+    handler: any
+  ) => {
+    if (!el) {
+      return
+    }
+    if (typeof events === 'string') {
+      events = [events]
+    }
+    events.forEach((e) => el[type](e, handler, { passive: false }))
   }
-  el.addEventListener(event, handler)
 }
-export function removeEvent<K extends keyof HTMLElementEventMap>(
-  el: HTMLElement,
-  event: K,
-  handler: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any
-) {
-  if (!el) {
-    return
-  }
-  el.removeEventListener(event, handler)
-}
+
+export const addEvent = createEventListenerFunction('addEventListener')
+
+export const removeEvent = createEventListenerFunction('removeEventListener')
 
 export function filterHandles(handles: ResizingHandle[]) {
   if (handles && handles.length > 0) {

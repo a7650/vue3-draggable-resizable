@@ -1,9 +1,17 @@
 <template>
   <div id="app">
-    <div>x:{{ x }} <button @click="x += 10">+</button><button @click="x -= 10">-</button></div>
-    <div>y:{{ y }}<button @click="y += 10">+</button><button @click="y -= 10">-</button></div>
-    <div>w:{{ w }}<button @click="w += 10">+</button><button @click="w -= 10">-</button></div>
-    <div>h: {{ h }}<button @click="h += 10">+</button><button @click="h -= 10">-</button></div>
+    <div>
+      x:{{ x }} <button @click="x += 10">+</button><button @click="x -= 10">-</button>
+    </div>
+    <div>
+      y:{{ y }}<button @click="y += 10">+</button><button @click="y -= 10">-</button>
+    </div>
+    <div>
+      w:{{ w }}<button @click="w += 10">+</button><button @click="w -= 10">-</button>
+    </div>
+    <div>
+      h: {{ h }}<button @click="h += 10">+</button><button @click="h -= 10">-</button>
+    </div>
     <div>active:{{ active }}<br /></div>
     <div class="parent">
       <Vue3DraggableResizable
@@ -16,7 +24,7 @@
         v-model:active="active"
         :draggable="draggable"
         :resizable="resizable"
-        :parent="false"
+        :parent="true"
         :disabledX="false"
         :disabledW="false"
         :disabledH="false"
@@ -66,11 +74,12 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .parent {
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  top: 100px;
-  left: 200px;
+  width: 300px;
+  height: 300px;
+  // position: absolute;
+  // top: 100px;
+  // left: 200px;
+  position: relative;
   border: 1px solid #000;
   user-select: none;
   ::v-deep {

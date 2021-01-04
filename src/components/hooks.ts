@@ -1,11 +1,20 @@
 import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
-import { getElSize, filterHandles, getId, getReferenceLineMap } from './utils'
+import {
+  getElSize,
+  filterHandles,
+  getId,
+  getReferenceLineMap,
+  addEvent,
+  removeEvent
+} from './utils'
 import {
   ContainerProvider,
   MatchedLine,
   ReferenceLineMap,
   ResizingHandle
 } from './types'
+
+type HandleEvent = MouseEvent | TouchEvent
 
 export function useState<T>(initialState: T): [Ref<T>, (value: T) => T] {
   const state = ref(initialState) as Ref<T>
@@ -95,8 +104,8 @@ export function initState(props: any, emit: any) {
 }
 
 export function initParent(containerRef: Ref<HTMLElement | undefined>) {
-  const parentWidth = ref<number>(0)
-  const parentHeight = ref<number>(0)
+  const parentWidth = ref(0)
+  const parentHeight = ref(0)
   onMounted(() => {
     if (containerRef.value && containerRef.value.parentElement) {
       const { width, height } = getElSize(containerRef.value.parentElement)
@@ -213,6 +222,18 @@ export function initLimitSizeAndMethods(
   }
 }
 
+const DOWN_HANDLES: (keyof HTMLElementEventMap)[] = ['mousedown', 'touchstart']
+const UP_HANDLES: (keyof HTMLElementEventMap)[] = ['mouseup', 'touchend']
+const MOVE_HANDLES: (keyof HTMLElementEventMap)[] = ['mousemove', 'touchmove']
+
+function getPosition(e: HandleEvent) {
+  if ('touches' in e) {
+    return [e.touches[0].pageX, e.touches[0].pageY]
+  } else {
+    return [e.pageX, e.pageY]
+  }
+}
+
 export function initDraggableContainer(
   containerRef: Ref<HTMLElement | undefined>,
   containerProps: ReturnType<typeof initState>,
@@ -235,7 +256,8 @@ export function initDraggableContainer(
   let lstPageX = 0
   let lstPageY = 0
   let referenceLineMap: ReferenceLineMap | null = null
-  const _unselect = (e: MouseEvent) => {
+  const documentElement = document.documentElement
+  const _unselect = (e: HandleEvent) => {
     const target = e.target
     if (!containerRef.value?.contains(<Node>target)) {
       setEnable(false)
@@ -244,10 +266,12 @@ export function initDraggableContainer(
       setResizingHandle('')
     }
   }
-  const handleUp = (e: MouseEvent) => {
+  const handleUp = () => {
     setDragging(false)
-    document.documentElement.removeEventListener('mouseup', handleUp)
-    document.documentElement.removeEventListener('mousemove', handleDrag)
+    // document.documentElement.removeEventListener('mouseup', handleUp)
+    // document.documentElement.removeEventListener('mousemove', handleDrag)
+    removeEvent(documentElement, UP_HANDLES, handleUp)
+    removeEvent(documentElement, MOVE_HANDLES, handleDrag)
     referenceLineMap = null
     if (containerProvider) {
       containerProvider.updatePosition(id, {
@@ -260,8 +284,9 @@ export function initDraggableContainer(
     }
   }
   const handleDrag = (e: MouseEvent) => {
+    e.preventDefault()
     if (!(dragging.value && containerRef.value)) return
-    const { pageX, pageY } = e
+    const [pageX, pageY] = getPosition(e)
     const deltaX = pageX - lstPageX
     const deltaY = pageY - lstPageY
     let newLeft = lstX + deltaX
@@ -317,15 +342,17 @@ export function initDraggableContainer(
     }
     emit('dragging', { x: setLeft(newLeft), y: setTop(newTop) })
   }
-  const handleDown = (e: MouseEvent) => {
+  const handleDown = (e: HandleEvent) => {
     if (!draggable.value) return
     setDragging(true)
     lstX = x.value
     lstY = y.value
-    lstPageX = e.pageX
-    lstPageY = e.pageY
-    document.documentElement.addEventListener('mousemove', handleDrag)
-    document.documentElement.addEventListener('mouseup', handleUp)
+    lstPageX = getPosition(e)[0]
+    lstPageY = getPosition(e)[1]
+    // document.documentElement.addEventListener('mousemove', handleDrag)
+    // document.documentElement.addEventListener('mouseup', handleUp)
+    addEvent(documentElement, MOVE_HANDLES, handleDrag)
+    addEvent(documentElement, UP_HANDLES, handleUp)
     if (containerProvider && !containerProvider.disabled.value) {
       referenceLineMap = getReferenceLineMap(containerProvider, parentSize, id)
     }
@@ -345,14 +372,19 @@ export function initDraggableContainer(
     if (!el) return
     el.style.left = x + 'px'
     el.style.top = y + 'px'
-    document.documentElement.addEventListener('mousedown', _unselect)
-    el.addEventListener('mousedown', handleDown)
+    // document.documentElement.addEventListener('mousedown', _unselect)
+    // el.addEventListener('mousedown', handleDown)
+    addEvent(documentElement, DOWN_HANDLES, _unselect)
+    addEvent(el, DOWN_HANDLES, handleDown)
   })
   onUnmounted(() => {
     if (!containerRef.value) return
-    document.documentElement.removeEventListener('mousedown', _unselect)
-    document.documentElement.removeEventListener('mouseup', handleUp)
-    document.documentElement.removeEventListener('mousemove', handleDrag)
+    // document.documentElement.removeEventListener('mousedown', _unselect)
+    // document.documentElement.removeEventListener('mouseup', handleUp)
+    // document.documentElement.removeEventListener('mousemove', handleDrag)
+    removeEvent(documentElement, DOWN_HANDLES, _unselect)
+    removeEvent(documentElement, UP_HANDLES, handleUp)
+    removeEvent(documentElement, MOVE_HANDLES, handleDrag)
   })
   return { containerRef }
 }
@@ -384,9 +416,12 @@ export function initResizeHandle(
   let tmpAspectRatio = 1
   let idx0 = ''
   let idx1 = ''
-  const resizeHandleDrag = (e: MouseEvent) => {
-    let deltaX = e.clientX - lstPageX
-    let deltaY = e.clientY - lstPageY
+  const documentElement = document.documentElement
+  const resizeHandleDrag = (e: HandleEvent) => {
+    e.preventDefault()
+    let [_pageX, _pageY] = getPosition(e)
+    let deltaX = _pageX - lstPageX
+    let deltaY = _pageY - lstPageY
     let _deltaX = deltaX
     let _deltaY = deltaY
     if (props.lockAspectRatio) {
@@ -423,7 +458,7 @@ export function initResizeHandle(
       h: height.value
     })
   }
-  const resizeHandleUp = (e: MouseEvent) => {
+  const resizeHandleUp = () => {
     emit('resize-end', {
       x: left.value,
       y: top.value,
@@ -436,10 +471,12 @@ export function initResizeHandle(
     setResizingMaxHeight(Infinity)
     setResizingMinWidth(props.minW)
     setResizingMinHeight(props.minH)
-    document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
-    document.documentElement.removeEventListener('mouseup', resizeHandleUp)
+    // document.documentElement.removeEventListener('mousemove', resizeHandleDrag)
+    // document.documentElement.removeEventListener('mouseup', resizeHandleUp)
+    removeEvent(documentElement, MOVE_HANDLES, resizeHandleDrag)
+    removeEvent(documentElement, UP_HANDLES, resizeHandleUp)
   }
-  const resizeHandleDown = (e: MouseEvent, handleType: ResizingHandle) => {
+  const resizeHandleDown = (e: HandleEvent, handleType: ResizingHandle) => {
     if (!props.resizable) return
     e.stopPropagation()
     setResizingHandle(handleType)
@@ -483,8 +520,9 @@ export function initResizeHandle(
     lstH = height.value
     lstX = left.value
     lstY = top.value
-    lstPageX = e.clientX
-    lstPageY = e.clientY
+    const lstPagePosition = getPosition(e)
+    lstPageX = lstPagePosition[0]
+    lstPageY = lstPagePosition[1]
     tmpAspectRatio = aspectRatio.value
     emit('resize-start', {
       x: left.value,
@@ -492,12 +530,16 @@ export function initResizeHandle(
       w: width.value,
       h: height.value
     })
-    document.documentElement.addEventListener('mousemove', resizeHandleDrag)
-    document.documentElement.addEventListener('mouseup', resizeHandleUp)
+    // document.documentElement.addEventListener('mousemove', resizeHandleDrag)
+    // document.documentElement.addEventListener('mouseup', resizeHandleUp)
+    addEvent(documentElement, MOVE_HANDLES, resizeHandleDrag)
+    addEvent(documentElement, UP_HANDLES, resizeHandleUp)
   }
   onUnmounted(() => {
-    document.documentElement.removeEventListener('mouseup', resizeHandleDrag)
-    document.documentElement.removeEventListener('mousemove', resizeHandleUp)
+    // document.documentElement.removeEventListener('mouseup', resizeHandleDrag)
+    // document.documentElement.removeEventListener('mousemove', resizeHandleUp)
+    removeEvent(documentElement, UP_HANDLES, resizeHandleUp)
+    removeEvent(documentElement, MOVE_HANDLES, resizeHandleDrag)
   })
   const handlesFiltered = computed(() =>
     props.resizable ? filterHandles(props.handles) : []
