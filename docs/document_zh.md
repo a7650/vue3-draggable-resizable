@@ -426,6 +426,14 @@ default: `handle`
 <div class="vdr-handle vdr-handle-ml my-handle my-handle-mr"></div>
 ...
 ```
+###  parent-scale-x  parent-scale-y
+used to tell Vue3DraggableResizable how parent scale to fix mouse positon issue
+eg:
+```html
+...
+   <Vue3DraggableResizable :parent-scale-x="0.5" parent-scale-y="0.5" >
+...
+```
 
 ### Events
 
