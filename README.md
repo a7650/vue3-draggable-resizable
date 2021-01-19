@@ -13,7 +13,7 @@
 > [Vue3 组件] 用于拖拽调整位置和大小的的组件，同时支持冲突检测，元素吸附对齐，实时参考线。
 > [ Vue3 Component ] Draggable and resizable component for vue3, and, support element adsorption alignment, real-time reference line, etc.
 
-[点击查看中文文档](https://github.com/a7650/vue3-draggable-resizable/blob/main/docs/document_zh.md)
+[点击查看中文文档](https://github.com/songyu719/vue3-draggable-resizable/blob/main/docs/document_zh.md)
 
 ## Table of Contents
 
@@ -86,6 +86,8 @@ Here is a complete example of using "vue-template"
         v-model:active="active"
         :draggable="true"
         :resizable="true"
+        :parent-scale-x="0.5"
+        :parent-scale-y="0.5"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
         @drag-start="print('drag-start')"
@@ -428,6 +430,14 @@ following handle nodes will be rendered
 ...
 ```
 
+###  parent-scale-x  parent-scale-y
+used to tell Vue3DraggableResizable how parent scale to fix mouse positon issue
+eg:
+```html
+...
+   <Vue3DraggableResizable :parent-scale-x="0.5" parent-scale-y="0.5" >
+...
+```
 ### Events
 
 #### activated

@@ -426,6 +426,14 @@ default: `handle`
 <div class="vdr-handle vdr-handle-ml my-handle my-handle-mr"></div>
 ...
 ```
+###  parent-scale-x  parent-scale-y
+设置这俩个属性用于告诉拖动组件父级的缩放情况，以解决缩放后拖动鼠标位置偏移的问题
+eg:
+```html
+...
+   <Vue3DraggableResizable :parent-scale-x="0.5" parent-scale-y="0.5" >
+...
+```
 
 ### Events
 
