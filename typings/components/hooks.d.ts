@@ -2,6 +2,7 @@ import { Ref } from 'vue';
 import { ContainerProvider, ResizingHandle } from './types';
 declare type HandleEvent = MouseEvent | TouchEvent;
 export declare function useState<T>(initialState: T): [Ref<T>, (value: T) => T];
+declare type TriggerKey = 'left' | 'right';
 export declare function initState(props: any, emit: any): {
     id: string;
     width: Ref<number>;
@@ -19,6 +20,7 @@ export declare function initState(props: any, emit: any): {
     aspectRatio: import("vue").ComputedRef<number>;
     parentScaleX: Ref<number>;
     parentScaleY: Ref<number>;
+    triggerKey: Ref<TriggerKey>;
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;

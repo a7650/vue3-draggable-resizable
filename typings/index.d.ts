@@ -12,6 +12,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -39,6 +40,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -76,6 +78,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -128,6 +131,7 @@ declare const _default: ({
             aspectRatio: import("vue").ComputedRef<number>;
             parentScaleX: import("vue").Ref<number>;
             parentScaleY: import("vue").Ref<number>;
+            triggerKey: import("vue").Ref<"left" | "right">;
             setEnable: (value: boolean) => boolean;
             setDragging: (value: boolean) => boolean;
             setResizing: (value: boolean) => boolean;
@@ -157,6 +161,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -188,6 +193,7 @@ declare const _default: ({
         h: number;
         parentScaleX: number;
         parentScaleY: number;
+        triggerKey: string;
         draggable: boolean;
         resizable: boolean;
         initW: number;
@@ -240,6 +246,7 @@ declare const _default: ({
         aspectRatio: import("vue").ComputedRef<number>;
         parentScaleX: import("vue").Ref<number>;
         parentScaleY: import("vue").Ref<number>;
+        triggerKey: import("vue").Ref<"left" | "right">;
         setEnable: (value: boolean) => boolean;
         setDragging: (value: boolean) => boolean;
         setResizing: (value: boolean) => boolean;
@@ -273,6 +280,7 @@ declare const _default: ({
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;
@@ -325,6 +333,7 @@ declare const _default: ({
     aspectRatio: import("vue").ComputedRef<number>;
     parentScaleX: import("vue").Ref<number>;
     parentScaleY: import("vue").Ref<number>;
+    triggerKey: import("vue").Ref<"left" | "right">;
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;
@@ -354,6 +363,7 @@ declare const _default: ({
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;
@@ -387,6 +397,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -414,6 +425,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -451,6 +463,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -503,6 +516,7 @@ declare const _default: ({
             aspectRatio: import("vue").ComputedRef<number>;
             parentScaleX: import("vue").Ref<number>;
             parentScaleY: import("vue").Ref<number>;
+            triggerKey: import("vue").Ref<"left" | "right">;
             setEnable: (value: boolean) => boolean;
             setDragging: (value: boolean) => boolean;
             setResizing: (value: boolean) => boolean;
@@ -532,6 +546,7 @@ declare const _default: ({
             h: number;
             parentScaleX: number;
             parentScaleY: number;
+            triggerKey: string;
             draggable: boolean;
             resizable: boolean;
             initW: number;
@@ -563,6 +578,7 @@ declare const _default: ({
         h: number;
         parentScaleX: number;
         parentScaleY: number;
+        triggerKey: string;
         draggable: boolean;
         resizable: boolean;
         initW: number;
@@ -615,6 +631,7 @@ declare const _default: ({
         aspectRatio: import("vue").ComputedRef<number>;
         parentScaleX: import("vue").Ref<number>;
         parentScaleY: import("vue").Ref<number>;
+        triggerKey: import("vue").Ref<"left" | "right">;
         setEnable: (value: boolean) => boolean;
         setDragging: (value: boolean) => boolean;
         setResizing: (value: boolean) => boolean;
@@ -648,6 +665,7 @@ declare const _default: ({
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;
@@ -700,6 +718,7 @@ declare const _default: ({
     aspectRatio: import("vue").ComputedRef<number>;
     parentScaleX: import("vue").Ref<number>;
     parentScaleY: import("vue").Ref<number>;
+    triggerKey: import("vue").Ref<"left" | "right">;
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;
@@ -729,6 +748,7 @@ declare const _default: ({
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;

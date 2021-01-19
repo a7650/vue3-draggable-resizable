@@ -108,6 +108,10 @@ declare const VueDraggableResizable: import("vue").DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
+    triggerKey: {
+        type: StringConstructor;
+        default: string;
+    };
 }, {
     handlesFiltered: import("vue").ComputedRef<ResizingHandle[]>;
     resizeHandleDown: (e: MouseEvent | TouchEvent, handleType: ResizingHandle) => void;
@@ -141,6 +145,7 @@ declare const VueDraggableResizable: import("vue").DefineComponent<{
     aspectRatio: import("vue").ComputedRef<number>;
     parentScaleX: Ref<number>;
     parentScaleY: Ref<number>;
+    triggerKey: Ref<"left" | "right">;
     setEnable: (value: boolean) => boolean;
     setDragging: (value: boolean) => boolean;
     setResizing: (value: boolean) => boolean;
@@ -170,6 +175,7 @@ declare const VueDraggableResizable: import("vue").DefineComponent<{
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;
@@ -197,6 +203,7 @@ declare const VueDraggableResizable: import("vue").DefineComponent<{
     h: number;
     parentScaleX: number;
     parentScaleY: number;
+    triggerKey: string;
     draggable: boolean;
     resizable: boolean;
     initW: number;

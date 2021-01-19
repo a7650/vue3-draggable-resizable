@@ -25,6 +25,7 @@ export function useState<T>(initialState: T): [Ref<T>, (value: T) => T] {
   return [state, setState]
 }
 
+declare  type TriggerKey = 'left' | 'right';
 export function initState(props: any, emit: any) {
   const [width, setWidth] = useState<number>(props.initW)
   const [height, setHeight] = useState<number>(props.initH)
@@ -40,6 +41,8 @@ export function initState(props: any, emit: any) {
   const [resizingMinHeight, setResizingMinHeight] = useState<number>(props.minH)
   const [parentScaleX,setParentScaleX] = useState<number>(props.parentScaleX)
   const [parentScaleY,setParentScaleY] = useState<number>(props.parentScaleY)
+  const [triggerKey,setTriggerKey] = useState<TriggerKey>(props.triggerKey)
+
   const aspectRatio = computed(() => height.value / width.value)
   watch(
     width,
@@ -81,6 +84,9 @@ export function initState(props: any, emit: any) {
   watch(()=>props.parentScaleY,()=>{
     setParentScaleY(props.parentScaleY)
   })
+  watch(()=>props.triggerKey,()=>{
+    setTriggerKey(props.triggerKey);
+  })
   return {
     id: getId(),
     width,
@@ -98,6 +104,7 @@ export function initState(props: any, emit: any) {
     aspectRatio,
     parentScaleX,
     parentScaleY,
+    triggerKey,
     setEnable,
     setDragging,
     setResizing,
@@ -261,7 +268,8 @@ export function initDraggableContainer(
     setResizing,
     setResizingHandle,
     parentScaleX,
-    parentScaleY
+    parentScaleY,
+    triggerKey
   } = containerProps
   const { setTop, setLeft } = limitProps
   let lstX = 0
@@ -298,6 +306,14 @@ export function initDraggableContainer(
   }
   const handleDrag = (e: MouseEvent) => {
     e.preventDefault()
+    const trigger = triggerKey.value=='right'?3:1;
+    console.log("键",triggerKey.value)
+    console.log("对应key",trigger)
+    console.log('按下的键',e)
+    if(trigger!= e.which){
+      return;
+    }
+
     if (!(dragging.value && containerRef.value)) return
     const [pageX, pageY] = getPosition(e)
     const deltaX = (pageX - lstPageX)/parentScaleX.value

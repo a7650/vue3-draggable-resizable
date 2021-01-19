@@ -4018,6 +4018,11 @@ function initState(props, emit) {
       parentScaleY = _useState28[0],
       setParentScaleY = _useState28[1];
 
+  var _useState29 = useState(props.triggerKey),
+      _useState30 = _slicedToArray(_useState29, 2),
+      triggerKey = _useState30[0],
+      setTriggerKey = _useState30[1];
+
   var aspectRatio = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["computed"])(function () {
     return height.value / width.value;
   });
@@ -4061,6 +4066,11 @@ function initState(props, emit) {
   }, function () {
     setParentScaleY(props.parentScaleY);
   });
+  Object(external_commonjs_vue_commonjs2_vue_root_Vue_["watch"])(function () {
+    return props.triggerKey;
+  }, function () {
+    setTriggerKey(props.triggerKey);
+  });
   return {
     id: getId(),
     width: width,
@@ -4078,6 +4088,7 @@ function initState(props, emit) {
     aspectRatio: aspectRatio,
     parentScaleX: parentScaleX,
     parentScaleY: parentScaleY,
+    triggerKey: triggerKey,
     setEnable: setEnable,
     setDragging: setDragging,
     setResizing: setResizing,
@@ -4227,7 +4238,8 @@ function initDraggableContainer(containerRef, containerProps, limitProps, dragga
       setResizing = containerProps.setResizing,
       setResizingHandle = containerProps.setResizingHandle,
       parentScaleX = containerProps.parentScaleX,
-      parentScaleY = containerProps.parentScaleY;
+      parentScaleY = containerProps.parentScaleY,
+      triggerKey = containerProps.triggerKey;
   var setTop = limitProps.setTop,
       setLeft = limitProps.setLeft;
   var lstX = 0;
@@ -4271,6 +4283,15 @@ function initDraggableContainer(containerRef, containerProps, limitProps, dragga
 
   var handleDrag = function handleDrag(e) {
     e.preventDefault();
+    var trigger = triggerKey.value == 'right' ? 3 : 1;
+    console.log("键", triggerKey.value);
+    console.log("对应key", trigger);
+    console.log('按下的键', e);
+
+    if (trigger != e.which) {
+      return;
+    }
+
     if (!(dragging.value && containerRef.value)) return;
 
     var _getPosition = getPosition(e),
@@ -4727,6 +4748,10 @@ var VdrProps = {
   parentScaleY: {
     type: Number,
     default: 1
+  },
+  triggerKey: {
+    type: String,
+    default: 'left'
   }
 };
 var emits = ['activated', 'deactivated', 'drag-start', 'resize-start', 'dragging', 'resizing', 'drag-end', 'resize-end', 'update:w', 'update:h', 'update:x', 'update:y', 'update:active'];

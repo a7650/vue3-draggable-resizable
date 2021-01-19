@@ -38,6 +38,7 @@ function initState(props, emit) {
     var _m = useState(props.minH), resizingMinHeight = _m[0], setResizingMinHeight = _m[1];
     var _o = useState(props.parentScaleX), parentScaleX = _o[0], setParentScaleX = _o[1];
     var _p = useState(props.parentScaleY), parentScaleY = _p[0], setParentScaleY = _p[1];
+    var _q = useState(props.triggerKey), triggerKey = _q[0], setTriggerKey = _q[1];
     var aspectRatio = vue_1.computed(function () { return height.value / width.value; });
     vue_1.watch(width, function (newVal) {
         emit('update:w', newVal);
@@ -69,6 +70,9 @@ function initState(props, emit) {
     vue_1.watch(function () { return props.parentScaleY; }, function () {
         setParentScaleY(props.parentScaleY);
     });
+    vue_1.watch(function () { return props.triggerKey; }, function () {
+        setTriggerKey(props.triggerKey);
+    });
     return {
         id: utils_1.getId(),
         width: width,
@@ -86,6 +90,7 @@ function initState(props, emit) {
         aspectRatio: aspectRatio,
         parentScaleX: parentScaleX,
         parentScaleY: parentScaleY,
+        triggerKey: triggerKey,
         setEnable: setEnable,
         setDragging: setDragging,
         setResizing: setResizing,
@@ -197,7 +202,7 @@ function getPosition(e) {
 }
 function initDraggableContainer(containerRef, containerProps, limitProps, draggable, emit, containerProvider, parentSize) {
     var x = containerProps.left, y = containerProps.top, w = containerProps.width, h = containerProps.height, dragging = containerProps.dragging, id = containerProps.id;
-    var setDragging = containerProps.setDragging, setEnable = containerProps.setEnable, setResizing = containerProps.setResizing, setResizingHandle = containerProps.setResizingHandle, parentScaleX = containerProps.parentScaleX, parentScaleY = containerProps.parentScaleY;
+    var setDragging = containerProps.setDragging, setEnable = containerProps.setEnable, setResizing = containerProps.setResizing, setResizingHandle = containerProps.setResizingHandle, parentScaleX = containerProps.parentScaleX, parentScaleY = containerProps.parentScaleY, triggerKey = containerProps.triggerKey;
     var setTop = limitProps.setTop, setLeft = limitProps.setLeft;
     var lstX = 0;
     var lstY = 0;
@@ -234,6 +239,13 @@ function initDraggableContainer(containerRef, containerProps, limitProps, dragga
     };
     var handleDrag = function (e) {
         e.preventDefault();
+        var trigger = triggerKey.value == 'right' ? 3 : 1;
+        console.log("键", triggerKey.value);
+        console.log("对应key", trigger);
+        console.log('按下的键', e);
+        if (trigger != e.which) {
+            return;
+        }
         if (!(dragging.value && containerRef.value))
             return;
         var _a = getPosition(e), pageX = _a[0], pageY = _a[1];

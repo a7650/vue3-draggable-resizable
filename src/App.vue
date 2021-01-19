@@ -36,7 +36,7 @@
         :lockAspectRatio="false"
         :parent-scale-x="scale"
         :parent-scale-y="scale"
-
+        triggerKey="left"
         classNameHandle="my-handle"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
@@ -68,7 +68,7 @@ export default defineComponent({
       w: 100,
       active: false,
       draggable: true,
-      resizable: true,
+      resizable: false,
       scale:1
     };
   },
@@ -88,7 +88,7 @@ export default defineComponent({
           }
         }
     },
-    print(val, e) {
+    print(val:any, e:any) {
       // console.log(val, e)
     },
   },

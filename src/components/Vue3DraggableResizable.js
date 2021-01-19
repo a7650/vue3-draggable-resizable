@@ -140,6 +140,10 @@ var VdrProps = {
     parentScaleY: {
         type: Number,
         "default": 1
+    },
+    triggerKey: {
+        type: String,
+        "default": 'left'
     }
 };
 var emits = [
