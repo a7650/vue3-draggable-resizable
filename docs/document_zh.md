@@ -427,7 +427,7 @@ default: `handle`
 ...
 ```
 ###  parent-scale-x  parent-scale-y
-used to tell Vue3DraggableResizable how parent scale to fix mouse positon issue
+设置这俩个属性用于告诉拖动组件父级的缩放情况，以解决缩放后拖动鼠标位置偏移的问题
 eg:
 ```html
 ...
