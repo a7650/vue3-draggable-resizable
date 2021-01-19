@@ -13,7 +13,7 @@
 > [Vue3 组件] 用于拖拽调整位置和大小的的组件，同时支持冲突检测，元素吸附对齐，实时参考线。
 > [ Vue3 Component ] Draggable and resizable component for vue3, and, support element adsorption alignment, real-time reference line, etc.
 
-[点击查看中文文档](https://github.com/a7650/vue3-draggable-resizable/blob/main/docs/document_zh.md)
+[点击查看中文文档](https://github.com/songyu719/vue3-draggable-resizable/blob/main/docs/document_zh.md)
 
 ## Table of Contents
 
