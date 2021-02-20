@@ -96,10 +96,10 @@ export function initState(props: any, emit: any) {
     setResizingMaxWidth,
     setResizingMinWidth,
     setResizingMinHeight,
-    $setWidth: (val: number) => setWidth(Math.floor(val)),
-    $setHeight: (val: number) => setHeight(Math.floor(val)),
-    $setTop: (val: number) => setTop(Math.floor(val)),
-    $setLeft: (val: number) => setLeft(Math.floor(val))
+    setWidthFun: (val: number) => setWidth(Math.floor(val)),
+    setHeightFun: (val: number) => setHeight(Math.floor(val)),
+    setTopFun: (val: number) => setTop(Math.floor(val)),
+    setLeftFun: (val: number) => setLeft(Math.floor(val))
   }
 }
 
@@ -134,7 +134,7 @@ export function initLimitSizeAndMethods(
     resizingMinWidth,
     resizingMinHeight
   } = containerProps
-  const { $setWidth, $setHeight, $setTop, $setLeft } = containerProps
+  const { setWidthFun, setHeightFun, setTopFun, setLeftFun } = containerProps
   const { parentWidth, parentHeight } = parentSize
   const limitProps = {
     minWidth: computed(() => {
@@ -175,7 +175,7 @@ export function initLimitSizeAndMethods(
       if (props.disabledW) {
         return width.value
       }
-      return $setWidth(
+      return setWidthFun(
         Math.min(
           limitProps.maxWidth.value,
           Math.max(limitProps.minWidth.value, val)
@@ -186,7 +186,7 @@ export function initLimitSizeAndMethods(
       if (props.disabledH) {
         return height.value
       }
-      return $setHeight(
+      return setHeightFun(
         Math.min(
           limitProps.maxHeight.value,
           Math.max(limitProps.minHeight.value, val)
@@ -197,7 +197,7 @@ export function initLimitSizeAndMethods(
       if (props.disabledY) {
         return top.value
       }
-      return $setTop(
+      return setTopFun(
         Math.min(
           limitProps.maxTop.value,
           Math.max(limitProps.minTop.value, val)
@@ -208,7 +208,7 @@ export function initLimitSizeAndMethods(
       if (props.disabledX) {
         return left.value
       }
-      return $setLeft(
+      return setLeftFun(
         Math.min(
           limitProps.maxLeft.value,
           Math.max(limitProps.minLeft.value, val)
