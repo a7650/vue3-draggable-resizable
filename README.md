@@ -86,6 +86,7 @@ Here is a complete example of using "vue-template"
         v-model:active="active"
         :draggable="true"
         :resizable="true"
+        :preventDeactivated="false"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
         @drag-start="print('drag-start')"
@@ -274,6 +275,17 @@ The `lockAspectRatio` property is used to lock aspect ratio.
 
 ```html
 <Vue3DraggableResizable :lockAspectRatio="true" />
+```
+
+#### preventDeactivated
+
+type:`Boolean`<br>
+default:`false`<br>
+
+Determines if the component should be deactivated when the user clicks/taps outside it.
+
+```html
+<Vue3DraggableResizable :preventDeactivated="false"/>
 ```
 
 #### disabledX

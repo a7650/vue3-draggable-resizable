@@ -275,6 +275,17 @@ default: `false`<br>
 <Vue3DraggableResizable :lockAspectRatio="true" />
 ```
 
+#### preventDeactivated
+
+type:`Boolean`<br>
+default:`false`<br>
+
+确定当用户在其外部单击/点击时是否应停用该组件
+
+```html
+<Vue3DraggableResizable :preventDeactivated="false"/>
+```
+
 #### disabledX
 
 type: `Boolean`<br>
