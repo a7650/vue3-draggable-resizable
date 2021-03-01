@@ -1,5 +1,5 @@
 {
-  "name": "vue3-draggable-resizable-eleven",
+  "name": "@lzq920/vue3-draggable-resizable",
   "version": "1.7.0",
   "private": false,
   "description": "[Vue3 Component] 拖拽缩放并具有自动吸附对齐、参考线等功能",
