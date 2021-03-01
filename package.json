@@ -35,12 +35,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eleven/vue3-draggable-resizable.git"
+    "url": "git+https://github.com/lzq920/vue3-draggable-resizable.git"
   },
   "bugs": {
-    "url": "https://github.com/eleven/vue3-draggable-resizable/issues"
+    "url": "https://github.com/lzq920/vue3-draggable-resizable/issues"
   },
-  "homepage": "https://github.com/eleven/vue3-draggable-resizable",
+  "homepage": "https://github.com/lzq920/vue3-draggable-resizable",
   "keywords": [
     "vue3",
     "component",
