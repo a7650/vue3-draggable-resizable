@@ -1,21 +1,15 @@
-import { defineComponent, ref, toRef, h, Ref, inject } from 'vue'
+import {defineComponent, h, inject, Ref, ref, toRef} from 'vue'
 import {
   initDraggableContainer,
-  watchProps,
-  initState,
-  initParent,
   initLimitSizeAndMethods,
-  initResizeHandle
+  initParent,
+  initResizeHandle,
+  initState,
+  watchProps
 } from './hooks'
 import './index.css'
-import { getElSize, filterHandles, IDENTITY } from './utils'
-import {
-  UpdatePosition,
-  GetPositionStore,
-  ResizingHandle,
-  ContainerProvider,
-  SetMatchedLine
-} from './types'
+import {filterHandles, getElSize, IDENTITY} from './utils'
+import {ContainerProvider, GetPositionStore, ResizingHandle, SetMatchedLine, UpdatePosition} from './types'
 
 export const ALL_HANDLES: ResizingHandle[] = [
   'tl',
@@ -127,6 +121,10 @@ const VdrProps = {
   lockAspectRatio: {
     type: Boolean,
     default: false
+  },
+  preventDeactivated: {
+    type: Boolean,
+    default: false,
   }
 }
 

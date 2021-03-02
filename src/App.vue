@@ -30,6 +30,7 @@
         :disabledH="false"
         :disabledY="false"
         :lockAspectRatio="true"
+        :preventDeactivated="false"
         classNameHandle="my-handle"
         @activated="print('activated')"
         @deactivated="print('deactivated')"
@@ -74,11 +75,8 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .parent {
-  width: 300px;
+  width: 100%;
   height: 300px;
-  // position: absolute;
-  // top: 100px;
-  // left: 200px;
   position: relative;
   border: 1px solid #000;
   user-select: none;
