@@ -5,6 +5,7 @@
 .vdr-container.active {
   outline-color: #000;
   outline-style: dashed;
+  cursor:move;
 }
 .vdr-container.dragging {
   outline-color: #000;
