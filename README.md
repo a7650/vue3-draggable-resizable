@@ -428,6 +428,17 @@ following handle nodes will be rendered
 ...
 ```
 
+#### enableNativeDrag
+Type: `Boolean`<br>
+Required: `false`<br>
+Default: `false`
+
+By default, the browser's native drag and drop funcionality (usually used for images and some other elements) is disabled, as it may conflict with the one provided by the component. If you need, for whatever reason, to have this functionality back you can set this prop to `true`.
+
+```html
+<vue-draggable-resizable :enable-native-drag="true">
+```
+
 ### Events
 
 #### activated

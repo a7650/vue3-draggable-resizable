@@ -127,6 +127,10 @@ const VdrProps = {
   lockAspectRatio: {
     type: Boolean,
     default: false
+  },
+  enableNativeDrag: {
+    type: Boolean,
+    default: false
   }
 }
 
@@ -219,7 +223,9 @@ const VueDraggableResizable = defineComponent({
   },
   mounted() {
     if (!this.containerRef) return
-    this.containerRef.ondragstart = () => false
+    if (!this.enableNativeDrag) {
+      this.containerRef.ondragstart = () => false
+    }
     const { width, height } = getElSize(this.containerRef)
     this.setWidth(this.initW === null ? this.w || width : this.initW)
     this.setHeight(this.initH === null ? this.h || height : this.initH)
