@@ -440,12 +440,12 @@ export function initResizeHandle(
       }
     }
     if (idx0 === 't') {
+      setTop(lstY - (height.value - lstH))
       if (idx1 === 'l') {
         setHeight(lstH - deltaY)
       } else if (idx1 === 'r') {
         setHeight(lstH + deltaY)
       }
-      setTop(lstY - (height.value - lstH))
     } else if (idx0 === 'b') {
       if (idx1 === 'l') {
         setHeight(lstH - deltaY)
@@ -486,21 +486,20 @@ export function initResizeHandle(
   }
   const resizeHandleDown = (e: HandleEvent, handleType: ResizingHandle) => {
     if (!props.resizable) return
-    console.log(handleType)
     e.stopPropagation()
     setResizingHandle(handleType)
     setResizing(true)
-    idx0 = handleType[0] // b
-    idx1 = handleType[1] //
-    if (aspectRatio.value) {
-      if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
-        idx0 = 't'
-        idx1 = 'l'
-      } else {
-        idx0 = 'b'
-        idx1 = 'r'
-      }
-    }
+    idx0 = handleType[0]
+    idx1 = handleType[1]
+    // if (aspectRatio.value) {
+    //   if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
+    //     idx0 = 't'
+    //     idx1 = 'l'
+    //   } else {
+    //     idx0 = 'b'
+    //     idx1 = 'r'
+    //   }
+    // }
     let minHeight = props.minH as number
     let minWidth = props.minW as number
     if (minHeight / minWidth > aspectRatio.value) {
