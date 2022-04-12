@@ -440,10 +440,18 @@ export function initResizeHandle(
       }
     }
     if (idx0 === 't') {
-      setHeight(lstH - deltaY)
+      if (idx1 === 'l') {
+        setHeight(lstH - deltaY)
+      } else if (idx1 === 'r') {
+        setHeight(lstH + deltaY)
+      }
       setTop(lstY - (height.value - lstH))
     } else if (idx0 === 'b') {
-      setHeight(lstH + deltaY)
+      if (idx1 === 'l') {
+        setHeight(lstH - deltaY)
+      } else if (idx1 === 'r') {
+        setHeight(lstH + deltaY)
+      }
     }
     if (idx1 === 'l') {
       setWidth(lstW - deltaX)
@@ -478,11 +486,12 @@ export function initResizeHandle(
   }
   const resizeHandleDown = (e: HandleEvent, handleType: ResizingHandle) => {
     if (!props.resizable) return
+    console.log(handleType)
     e.stopPropagation()
     setResizingHandle(handleType)
     setResizing(true)
-    idx0 = handleType[0]
-    idx1 = handleType[1]
+    idx0 = handleType[0] // b
+    idx1 = handleType[1] //
     if (aspectRatio.value) {
       if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
         idx0 = 't'

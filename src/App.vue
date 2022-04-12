@@ -1,18 +1,29 @@
 <template>
   <div id="app">
     <div>
-      x:{{ x }} <button @click="x += 10">+</button><button @click="x -= 10">-</button>
+      x:{{ x }}
+      <button @click="x += 10">+</button>
+      <button @click="x -= 10">-</button>
     </div>
     <div>
-      y:{{ y }}<button @click="y += 10">+</button><button @click="y -= 10">-</button>
+      y:{{ y }}
+      <button @click="y += 10">+</button>
+      <button @click="y -= 10">-</button>
     </div>
     <div>
-      w:{{ w }}<button @click="w += 10">+</button><button @click="w -= 10">-</button>
+      w:{{ w }}
+      <button @click="w += 10">+</button>
+      <button @click="w -= 10">-</button>
     </div>
     <div>
-      h: {{ h }}<button @click="h += 10">+</button><button @click="h -= 10">-</button>
+      h: {{ h }}
+      <button @click="h += 10">+</button>
+      <button @click="h -= 10">-</button>
     </div>
-    <div>active:{{ active }}<br /></div>
+    <div>
+      active:{{ active }}
+      <br />
+    </div>
     <div class="parent">
       <Vue3DraggableResizable
         :initW="40"
@@ -39,21 +50,19 @@
         @resizing="print('resizing', $event)"
         @drag-end="print('drag-end', $event)"
         @resize-end="print('resize-end', $event)"
-      >
-        This is a test example
-      </Vue3DraggableResizable>
+      >This is a test example</Vue3DraggableResizable>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import Vue3DraggableResizable from "./components/Vue3DraggableResizable";
 import DraggableContainer from "./components/DraggableContainer";
 
 export default defineComponent({
   components: { DraggableContainer, Vue3DraggableResizable },
-  data() {
+  data () {
     return {
       x: 100,
       y: 100,
@@ -64,10 +73,10 @@ export default defineComponent({
       resizable: true,
     };
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    print(val, e) {
-      // console.log(val, e)
+    print (val: any, e: any) {
+      console.log(val, e)
     },
   },
 });
