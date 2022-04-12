@@ -424,6 +424,7 @@ export function initResizeHandle(
     let deltaY = _pageY - lstPageY
     let _deltaX = deltaX
     let _deltaY = deltaY
+
     if (props.lockAspectRatio) {
       deltaX = Math.abs(deltaX)
       deltaY = deltaX * tmpAspectRatio
@@ -439,26 +440,65 @@ export function initResizeHandle(
         }
       }
     }
-    if (idx0 === 't') {
-      setTop(lstY - (height.value - lstH))
-      if (idx1 === 'l') {
+    const dir = idx0 + idx1
+    switch (dir) {
+      case 'tl':
+        setTop(lstY - (height.value - lstH))
+        setLeft(lstX - (width.value - lstW))
         setHeight(lstH - deltaY)
-      } else if (idx1 === 'r') {
-        setHeight(lstH + deltaY)
-      }
-    } else if (idx0 === 'b') {
-      if (idx1 === 'l') {
+        setWidth(lstW - deltaX)
+        break;
+      case 'tm':
+        setTop(lstY - (height.value - lstH))
         setHeight(lstH - deltaY)
-      } else if (idx1 === 'r') {
+        break;
+      case 'tr':
+        setTop(lstY - (height.value - lstH))
+        setHeight(lstH - deltaY)
+        setWidth(lstW + deltaX)
+        break;
+      case 'mr':
+        setWidth(lstW + deltaX)
+        break;
+      case 'br':
         setHeight(lstH + deltaY)
-      }
+        setWidth(lstW + deltaX)
+        break;
+      case 'bm':
+        setHeight(lstH + deltaY)
+        break;
+      case 'bl':
+        setHeight(lstH + deltaY)
+        setWidth(lstW - deltaX)
+        setLeft(lstX - (width.value - lstW))
+        break;
+      case 'ml':
+        setLeft(lstX - (width.value - lstW))
+        setWidth(lstW - deltaX)
+        break;
     }
-    if (idx1 === 'l') {
-      setWidth(lstW - deltaX)
-      setLeft(lstX - (width.value - lstW))
-    } else if (idx1 === 'r') {
-      setWidth(lstW + deltaX)
-    }
+
+    // console.log(idx0, idx1, deltaX, deltaY)
+    // if (idx0 === 't') {
+    //   setTop(lstY - (height.value - lstH))
+    //   if (['l', 'm'].indexOf(idx1)) {
+    //     setHeight(lstH - deltaY)
+    //   } else if (idx1 === 'r') {
+    //     setHeight(lstH + deltaY)
+    //   }
+    // } else if (idx0 === 'b') {
+    //   if (idx1 === 'l') {
+    //     setHeight(lstH - deltaY)
+    //   } else if (['r', 'm'].indexOf(idx1)) {
+    //     setHeight(lstH + deltaY)
+    //   }
+    // }
+    // if (idx1 === 'l') {
+    //   setWidth(lstW - deltaX)
+    //   setLeft(lstX - (width.value - lstW))
+    // } else if (idx1 === 'r') {
+    //   setWidth(lstW + deltaX)
+    // }
     emit('resizing', {
       x: left.value,
       y: top.value,
