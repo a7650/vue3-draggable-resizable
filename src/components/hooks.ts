@@ -483,7 +483,7 @@ export function initResizeHandle(
     setResizing(true)
     idx0 = handleType[0]
     idx1 = handleType[1]
-    if (aspectRatio.value) {
+    if (props.lockAspectRatio) {
       if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
         idx0 = 't'
         idx1 = 'l'
