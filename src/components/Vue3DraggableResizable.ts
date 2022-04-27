@@ -152,7 +152,7 @@ const VueDraggableResizable = defineComponent({
   emits: emits,
   setup(props, { emit }) {
     const containerProps = initState(props, emit)
-    const provideIdentity = inject('identity')
+    const provideIdentity = inject('identity', Symbol())
     let containerProvider: ContainerProvider | null = null
     if (provideIdentity === IDENTITY) {
       containerProvider = {
