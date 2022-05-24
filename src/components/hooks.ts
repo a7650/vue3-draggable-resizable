@@ -494,10 +494,12 @@ export function initResizeHandle(
     }
     let minHeight = props.minH as number
     let minWidth = props.minW as number
-    if (minHeight / minWidth > aspectRatio.value) {
-      minWidth = minHeight / aspectRatio.value
-    } else {
-      minHeight = minWidth * aspectRatio.value
+    if (props.lockAspectRatio) {
+      if (minHeight / minWidth > aspectRatio.value) {
+        minWidth = minHeight / aspectRatio.value
+      } else {
+        minHeight = minWidth * aspectRatio.value
+      }
     }
     setResizingMinWidth(minWidth)
     setResizingMinHeight(minHeight)
