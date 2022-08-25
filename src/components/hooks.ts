@@ -503,7 +503,7 @@ export function initResizeHandle(
     }
     setResizingMinWidth(minWidth)
     setResizingMinHeight(minHeight)
-    if (parent) {
+    if (props.parent) {
       let maxHeight =
         idx0 === 't' ? top.value + height.value : parentHeight.value - top.value
       let maxWidth =
