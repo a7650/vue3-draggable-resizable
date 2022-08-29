@@ -424,7 +424,7 @@ export function initResizeHandle(
     let deltaY = _pageY - lstPageY
     let _deltaX = deltaX
     let _deltaY = deltaY
-    if (props.lockAspectRatio) {
+    if (props.lockAspectRatio && idx1 !== 'm') {
       deltaX = Math.abs(deltaX)
       deltaY = deltaX * tmpAspectRatio
       if (idx0 === 't') {
@@ -438,12 +438,27 @@ export function initResizeHandle(
           deltaY = -deltaY
         }
       }
-    }
-    if (idx0 === 't') {
-      setHeight(lstH - deltaY)
-      setTop(lstY - (height.value - lstH))
-    } else if (idx0 === 'b') {
-      setHeight(lstH + deltaY)
+      if (idx0 === 't') {
+        if (idx1 === 'l') {
+          setHeight(lstH - deltaY)
+        } else if (idx1 === 'r') {
+          setHeight(lstH + deltaY)
+        }
+        setTop(lstY - (height.value - lstH))
+      } else if (idx0 === 'b') {
+        if (idx1 === 'l') {
+          setHeight(lstH - deltaY)
+        } else if (idx1 === 'r') {
+          setHeight(lstH + deltaY)
+        }
+      }
+    } else {
+      if (idx0 === 't') {
+        setHeight(lstH - deltaY)
+        setTop(lstY - (height.value - lstH))
+      } else if (idx0 === 'b') {
+        setHeight(lstH + deltaY)
+      }
     }
     if (idx1 === 'l') {
       setWidth(lstW - deltaX)
@@ -484,10 +499,16 @@ export function initResizeHandle(
     idx0 = handleType[0]
     idx1 = handleType[1]
     if (aspectRatio.value) {
-      if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
+      if (['tl'].includes(handleType)) {
         idx0 = 't'
         idx1 = 'l'
-      } else {
+      } else if (['bl'].includes(handleType)) {
+        idx0 = 'b'
+        idx1 = 'l'
+      } else if (['tr'].includes(handleType)) {
+        idx0 = 't'
+        idx1 = 'r'
+      } else if (['br'].includes(handleType)) {
         idx0 = 'b'
         idx1 = 'r'
       }
