@@ -1,15 +1,15 @@
 .vdr-container {
   position: absolute;
-  border: 1px solid transparent;
-  box-sizing: border-box;
+  outline: 1px solid transparent;
 }
 .vdr-container.active {
-  border-color: #000;
-  border-style: dashed;
+  outline-color: #000;
+  outline-style: dashed;
+  cursor:move;
 }
 .vdr-container.dragging {
-  border-color: #000;
-  border-style: solid;
+  outline-color: #000;
+  outline-style: solid;
 }
 .vdr-handle {
   box-sizing: border-box;
