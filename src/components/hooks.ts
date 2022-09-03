@@ -1,4 +1,5 @@
 import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
+import { conflict } from './conflict'
 import {
   getElSize,
   filterHandles,
@@ -233,12 +234,19 @@ function getPosition(e: HandleEvent) {
     return [e.pageX, e.pageY]
   }
 }
-
+//存储初始值
+const handleDownOptions = {
+  left: 0,
+  top: 0,
+  width: 0,
+  height: 0
+}
 export function initDraggableContainer(
   containerRef: Ref<HTMLElement | undefined>,
   containerProps: ReturnType<typeof initState>,
   limitProps: ReturnType<typeof initLimitSizeAndMethods>,
   draggable: Ref<boolean>,
+  isConflictCheck: Ref<boolean>,
   emit: any,
   containerProvider: ContainerProvider | null,
   parentSize: ReturnType<typeof initParent>
@@ -267,6 +275,12 @@ export function initDraggableContainer(
     }
   }
   const handleUp = () => {
+    //调用冲突检测方法
+    const isConflict = conflict(y.value, x.value, w.value, h.value, containerRef.value!.parentNode!.childNodes, containerRef.value!)
+    //判断有无冲突和是否开启冲突检测
+    if(isConflict && isConflictCheck.value){
+      emit('dragging', { x: setLeft(handleDownOptions.left), y: setTop(handleDownOptions.top) })
+    }
     setDragging(false)
     // document.documentElement.removeEventListener('mouseup', handleUp)
     // document.documentElement.removeEventListener('mousemove', handleDrag)
@@ -343,6 +357,11 @@ export function initDraggableContainer(
     emit('dragging', { x: setLeft(newLeft), y: setTop(newTop) })
   }
   const handleDown = (e: HandleEvent) => {
+    //按下记录组件原始位置及大小
+    handleDownOptions.left = x.value
+    handleDownOptions.top = y.value
+    handleDownOptions.width = w.value
+    handleDownOptions.height = h.value
     if (!draggable.value) return
     setDragging(true)
     lstX = x.value

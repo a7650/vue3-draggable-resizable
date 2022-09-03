@@ -127,6 +127,11 @@ const VdrProps = {
   lockAspectRatio: {
     type: Boolean,
     default: false
+  },
+  //开启冲突检测-默认开启
+  isConflictCheck: {
+    type: Boolean,
+    default: true
   }
 }
 
@@ -177,6 +182,7 @@ const VueDraggableResizable = defineComponent({
       containerProps,
       limitProps,
       toRef(props, 'draggable'),
+      toRef(props, 'isConflictCheck'),
       emit,
       containerProvider,
       parentSize
