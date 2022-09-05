@@ -51,3 +51,10 @@ export type ReferenceLineMap = Record<
     [propName: number]: Record<'min' | 'max' | 'value', number>
   }
 >
+
+export type parentParams = {
+  width: number
+  height: number
+}
+
+export type getObsCallback = (parentParams: parentParams) => void

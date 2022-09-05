@@ -1,6 +1,7 @@
 import { onMounted, onUnmounted, ref, watch, Ref, computed } from 'vue'
 import {
   getElSize,
+  getObsElSize,
   filterHandles,
   getId,
   getReferenceLineMap,
@@ -109,6 +110,10 @@ export function initParent(containerRef: Ref<HTMLElement | undefined>) {
   onMounted(() => {
     if (containerRef.value && containerRef.value.parentElement) {
       const { width, height } = getElSize(containerRef.value.parentElement)
+      getObsElSize(containerRef.value.parentElement, ({ width, height }) => {
+        parentWidth.value = width
+        parentHeight.value = height
+      })
       parentWidth.value = width
       parentHeight.value = height
     }
@@ -483,7 +488,7 @@ export function initResizeHandle(
     setResizing(true)
     idx0 = handleType[0]
     idx1 = handleType[1]
-    if (props.lockAspectRatio) {
+    if (aspectRatio.value) {
       if (['tl', 'tm', 'ml', 'bl'].includes(handleType)) {
         idx0 = 't'
         idx1 = 'l'
@@ -494,16 +499,14 @@ export function initResizeHandle(
     }
     let minHeight = props.minH as number
     let minWidth = props.minW as number
-    if (props.lockAspectRatio) {
-      if (minHeight / minWidth > aspectRatio.value) {
-        minWidth = minHeight / aspectRatio.value
-      } else {
-        minHeight = minWidth * aspectRatio.value
-      }
+    if (minHeight / minWidth > aspectRatio.value) {
+      minWidth = minHeight / aspectRatio.value
+    } else {
+      minHeight = minWidth * aspectRatio.value
     }
     setResizingMinWidth(minWidth)
     setResizingMinHeight(minHeight)
-    if (props.parent) {
+    if (parent) {
       let maxHeight =
         idx0 === 't' ? top.value + height.value : parentHeight.value - top.value
       let maxWidth =

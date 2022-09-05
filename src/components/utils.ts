@@ -2,7 +2,8 @@ import {
   ContainerProvider,
   ParentSize,
   ReferenceLineMap,
-  ResizingHandle
+  ResizingHandle,
+  getObsCallback
 } from './types'
 import { ALL_HANDLES } from './Vue3DraggableResizable'
 
@@ -15,6 +16,19 @@ export function getElSize(el: Element) {
     height: parseFloat(style.getPropertyValue('height'))
   }
 }
+
+export function getObsElSize(el: Element, fn: getObsCallback) {
+  const myObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+    entries.forEach(({ contentRect: { width, height }}) => {
+      fn({
+        width,
+        height
+      })
+    })
+  })
+  myObserver.observe(el)
+}
+
 
 function createEventListenerFunction(
   type: 'addEventListener' | 'removeEventListener'
