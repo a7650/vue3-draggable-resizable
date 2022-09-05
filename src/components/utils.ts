@@ -45,7 +45,7 @@ function createEventListenerFunction(
     if (typeof events === 'string') {
       events = [events]
     }
-    events.forEach((e) => el[type](e, handler, options))
+    events.forEach((e) => el[type](e, handler, options ))
   }
 }
 
