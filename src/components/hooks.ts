@@ -379,7 +379,7 @@ export function initDraggableContainer(
     el.style.top = y + 'px'
     // document.documentElement.addEventListener('mousedown', _unselect)
     // el.addEventListener('mousedown', handleDown)
-    addEvent(documentElement, DOWN_HANDLES, _unselect)
+    addEvent(documentElement, DOWN_HANDLES, _unselect, true)
     addEvent(el, DOWN_HANDLES, handleDown)
   })
   onUnmounted(() => {
