@@ -262,7 +262,7 @@ default: `true`<br>
 Defines the component can be resizable or not
 
 ```html
-<Vue3DraggableResizable :draggable="true" />
+<Vue3DraggableResizable :resizable="true" />
 ```
 
 #### lockAspectRatio
